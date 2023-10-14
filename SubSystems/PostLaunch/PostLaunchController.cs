@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Welp.PostLaunch.Models;
 
 namespace Welp.PostLaunch;
 
@@ -12,8 +13,12 @@ public class PostLaunchController : Controller, IPostLaunchService
         this.postLaunchService = postLaunchService;
     }
 
+    /// <summary>
+    /// Patch Releases: Addresses bug fixes and improvements.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     [HttpGet]
     public async Task<PatchReleaseResponse> GetPatchRelease(PatchReleaseRequest request) =>
         await postLaunchService.GetPatchRelease(request);
-
 }

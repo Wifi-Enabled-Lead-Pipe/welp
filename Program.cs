@@ -27,6 +27,7 @@ builder.Services.AddTransient<IGameBoardService, GameBoardService>();
 builder.Services.AddTransient<IGameDataService, GameDataService>();
 builder.Services.AddTransient<IGameLobbyService, GameLobbyService>();
 builder.Services.AddTransient<IGameLogicService, GameLogicService>();
+
 builder.Services.AddTransient<IPostLaunchService, PostLaunchService>();
 builder.Services.AddTransient<ISecurityService, SecurityService>();
 builder.Services.AddTransient<IUserManagementService, UserManagementService>();

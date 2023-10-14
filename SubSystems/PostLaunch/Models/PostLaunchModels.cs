@@ -1,6 +1,6 @@
-namespace Welp.UserManagement.Models;
+namespace Welp.PostLaunch.Models;
 
-public class PatchReleaseRequest {  }
+public class PatchReleaseRequest { }
 
 public record PatchReleaseResponse
 {
