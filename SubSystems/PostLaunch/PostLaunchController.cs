@@ -11,4 +11,9 @@ public class PostLaunchController : Controller, IPostLaunchService
     {
         this.postLaunchService = postLaunchService;
     }
+
+    [HttpGet]
+    public async Task<PatchReleaseResponse> GetPatchRelease(PatchReleaseRequest request) =>
+        await postLaunchService.GetPatchRelease(request);
+
 }

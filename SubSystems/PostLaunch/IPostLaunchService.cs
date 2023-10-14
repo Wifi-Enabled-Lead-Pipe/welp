@@ -1,3 +1,7 @@
 namespace Welp.PostLaunch;
 
-public interface IPostLaunchService { }
+public interface IPostLaunchService 
+{ 
+    Task<PatchReleaseResponse> GetPatchRelease(PatchReleaseRequest request);
+}
+
