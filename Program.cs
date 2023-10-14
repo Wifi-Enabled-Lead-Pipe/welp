@@ -1,4 +1,3 @@
-using Welp.Data;
 using Welp.Hubs;
 using Microsoft.AspNetCore.ResponseCompression;
 using Welp.UserManagement;
@@ -8,13 +7,20 @@ using Welp.GameLogic;
 using Welp.PostLaunch;
 using Welp.GameLobby;
 using Welp.Security;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 #region snippet_ConfigureServices
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Wifi Enabled Lead Pipe - V1", Version = "v1" });
+
+    var filePath = Path.Combine(AppContext.BaseDirectory, "Welp.xml");
+    c.IncludeXmlComments(filePath);
+});
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddTransient<IGameBoardService, GameBoardService>();

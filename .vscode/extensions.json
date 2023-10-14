@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "ms-dotnettools.vscode-dotnet-runtime",
+    "ms-dotnettools.csharp",
+    "streetsidesoftware.code-spell-checker",
+    "csharpier.csharpier-vscode",
+    "vscode-icons-team.vscode-icons",
+    "redhat.vscode-yaml"
+  ]
+}
