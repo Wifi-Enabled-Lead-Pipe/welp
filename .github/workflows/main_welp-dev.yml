@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'welp-dev'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9F3032502DDB45179CB5CDEC076F6D22 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9D61EB23519742C4AAE5A784FF4B97A9 }}
           package: .
