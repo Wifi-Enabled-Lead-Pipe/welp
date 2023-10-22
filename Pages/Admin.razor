@@ -1,9 +1,95 @@
 @page "/admin"
 
-@using PrettyBlazor
+
 @using Microsoft.AspNetCore.Components
+@using Newtonsoft.Json
 @inject NavigationManager NavigationManager
 
-<div>
-  Admin Page
-</div>
+<PageTitle>Welp-Admin</PageTitle>
+<BSContainer Container="Container.Fluid" class="ps-5">
+  <BSRow Justify="Justify.Center">
+
+    <BSCol>
+      <BSAccordion class="pt-5 pe-5">
+        <BSAccordionItem>
+          <Header><strong>
+              Broadcast a message
+            </strong></Header>
+          <Content>
+            <BSRow>
+              <p class="mb-0">Client To Server-Hub then Server-Hub To All Clients</p>
+            </BSRow>
+            <div class="row">
+              <div class="col">
+                <EditForm Model="@broadcastRequest">
+                  <InputText @bind-Value="broadcastRequest!.Message" placeholder="Message" />
+                </EditForm>
+              </div>
+              <div class="col">
+                <button @onclick="BroadcastMessage" type="button" class="btn btn-primary massive-button">Send
+                  It</button>
+              </div>
+            </div>
+          </Content>
+        </BSAccordionItem>
+        <BSAccordionItem>
+          <Header><strong>
+              Messages Broadcasted
+            </strong></Header>
+          <Content>
+            <ul>
+              @foreach (var message in broadcastResponses.Select(m => JsonConvert.SerializeObject(m)))
+              {
+                <li>@message </li>
+              }
+            </ul>
+          </Content>
+        </BSAccordionItem>
+      </BSAccordion>
+    </BSCol>
+    <BSCol>
+
+      <BSAccordion class="pt-5 pe-5">
+        <BSAccordionItem>
+          <Header><strong>
+              Send a private message
+            </strong></Header>
+          <Content>
+            <BSRow>
+
+              <p class="mb-0">Client To Server-Hub then Server-Hub To A Specific Client</p>
+            </BSRow>
+            <div class="row">
+              <div class="col">
+                <EditForm Model="@privateMessageRequest">
+                  <InputText @bind-Value="privateMessageRequest!.IdOrUserName" placeholder="IdOrUserName" />
+                  <InputText @bind-Value="privateMessageRequest!.Message" placeholder="Message" />
+                </EditForm>
+              </div>
+              <div class="col">
+                <button @onclick="SendPrivateMessage" type="button" class="btn btn-primary massive-button">Send
+                  It</button>
+              </div>
+            </div>
+          </Content>
+        </BSAccordionItem>
+        <BSAccordionItem>
+          <Header><strong>
+              Private Messages Broadcasted
+            </strong></Header>
+          <Content>
+            <ul>
+              @foreach (var message in privateMessageResponses.Select(m => JsonConvert.SerializeObject(m)))
+              {
+
+                <li>@message</li>
+              }
+            </ul>
+          </Content>
+        </BSAccordionItem>
+      </BSAccordion>
+    </BSCol>
+
+
+  </BSRow>
+</BSContainer>

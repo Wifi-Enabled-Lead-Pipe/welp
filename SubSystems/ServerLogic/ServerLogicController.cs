@@ -7,14 +7,23 @@ namespace Welp.ServerLogic;
 public class ServerLogicController : Controller, IServerLogicService
 {
     private readonly IServerLogicService ServerLogicService;
-    private readonly IServerDataService gameDataService;
 
-    public ServerLogicController(
-        IServerLogicService ServerLogicService,
-        IServerDataService gameDataService
-    )
+    public ServerLogicController(IServerLogicService ServerLogicService)
     {
         this.ServerLogicService = ServerLogicService;
-        this.gameDataService = gameDataService;
+    }
+
+    public async Task<PlayerActionValidationOutput> ValidatePlayerAction(
+        PlayerActionInput actionInput,
+        GameState gameState
+    )
+    {
+        return await Task.FromResult(
+            new PlayerActionValidationOutput()
+            {
+                Status = actionInput.IsValid ? "valid" : "invalid",
+                GameState = gameState
+            }
+        );
     }
 }
