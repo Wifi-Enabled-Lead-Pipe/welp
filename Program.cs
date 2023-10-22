@@ -1,13 +1,12 @@
 using Welp.Hubs;
 using Microsoft.AspNetCore.ResponseCompression;
-using Welp.UserManagement;
-using Welp.GameBoard;
-using Welp.GameData;
-using Welp.GameLogic;
+using Welp.ServerData;
+using Welp.ServerLogic;
 using Welp.PostLaunch;
 using Welp.GameLobby;
-using Welp.Security;
 using Microsoft.OpenApi.Models;
+using Welp.ServerHub;
+using BlazorStrap;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,14 +22,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddTransient<IGameBoardService, GameBoardService>();
-builder.Services.AddTransient<IGameDataService, GameDataService>();
+builder.Services.AddBlazorStrap();
 builder.Services.AddTransient<IGameLobbyService, GameLobbyService>();
-builder.Services.AddTransient<IGameLogicService, GameLogicService>();
-
 builder.Services.AddTransient<IPostLaunchService, PostLaunchService>();
-builder.Services.AddTransient<ISecurityService, SecurityService>();
-builder.Services.AddTransient<IUserManagementService, UserManagementService>();
+builder.Services.AddTransient<IServerDataService, ServerDataService>();
+builder.Services.AddTransient<IServerHubService, ServerHubService>();
+builder.Services.AddTransient<IServerLogicService, ServerLogicService>();
 
 builder.Services.AddControllers();
 

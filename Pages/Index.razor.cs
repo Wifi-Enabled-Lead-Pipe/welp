@@ -1,60 +1,30 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
+using Welp.GameLobby;
 
 namespace Welp.Pages;
 
 public partial class Index
 {
-    private HubConnection? hubConnection;
-    private List<string> messages = new List<string>();
-    private string? userInput;
-    private string? messageInput;
+    [Inject]
+    public NavigationManager? navigationManager { get; set; }
+    public NewGameModel? newGameModel { get; set; }
+    public JoinGameModel? joinGameModel { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(
-                Navigation.ToAbsoluteUri("/gamehub"),
-                conf =>
-                {
-                    conf.HttpMessageHandlerFactory = (x) =>
-                        new HttpClientHandler
-                        {
-                            ServerCertificateCustomValidationCallback =
-                                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
-                        };
-                }
-            )
-            .Build();
-
-        hubConnection.On<string, string>(
-            "ReceiveMessage",
-            (user, message) =>
-            {
-                var encodedMsg = $"{user}: {message}";
-                messages.Add(encodedMsg);
-                InvokeAsync(StateHasChanged);
-            }
-        );
-
-        await hubConnection.StartAsync();
+        newGameModel = new();
+        joinGameModel = new();
     }
 
-    private async Task Send()
+    public async ValueTask DisposeAsync() { }
+
+    private void CreateGame()
     {
-        if (hubConnection is not null)
-        {
-            await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-        }
+        navigationManager?.NavigateTo("game");
     }
 
-    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
-    public async ValueTask DisposeAsync()
+    private void JoinGame()
     {
-        if (hubConnection is not null)
-        {
-            await hubConnection.DisposeAsync();
-        }
+        navigationManager?.NavigateTo("game");
     }
 }

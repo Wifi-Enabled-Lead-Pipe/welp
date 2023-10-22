@@ -1,29 +1,98 @@
 ﻿@page "/"
 
 @using PrettyBlazor
-@inject NavigationManager Navigation
 @implements IAsyncDisposable
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Welp</PageTitle>
 
-<div class="form-group">
-    <label>
-        User:
-        <input @bind="userInput" />
-    </label>
+<!-- Header - set the background image for the header in the line below-->
+<header class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/wfh8dDlNFOk/1600x900')">
+    <div class="text-center my-5">
+        <img class="doggo img-fluid mb-4" src="images/welp-team-photo.png" alt="..." />
+
+        <h1 class="text-white fs-3 fw-bolder">Clueless</h1>
+        <p class="text-white-50 mb-0">A game sorta like Clue... but less</p>
+    </div>
+</header>
+<!-- Content section-->
+<section class="py-5">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col">
+                <h2>Get Started</h2>
+                <p class="lead">
+                    Create a game for your friends to join.
+                </p>
+                <p class="mb-0">
+                    We only need a little information about your self and how your friends will find you. Please fill
+                    out the form below and click "Submit"!
+                </p>
+                <div class="row">
+                    <div class="col">
+                        <EditForm Model="@newGameModel">
+                            <InputText @bind-Value="newGameModel!.GameName" placeholder="Game Name" />
+                            <InputText @bind-Value="newGameModel!.UserName" placeholder="User Name" />
+                            <InputText @bind-Value="newGameModel!.UserEmail" placeholder="User Email" />
+                        </EditForm>
+                    </div>
+                    <div class="col">
+                        <button @onclick="CreateGame" type="button" class="btn btn-primary massive-button">Create
+                            Game</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h2>Join The Game</h2>
+                <p class="lead">Are your friends already waiting for you?</p>
+                <p class="mb-0">No problem. Just provide your name and email and we will get you back in the game.</p>
+                <div class="row">
+                    <div class="col">
+                        <EditForm Model="@joinGameModel">
+                            <InputText @bind-Value="joinGameModel!.UserName" />
+                            <InputText @bind-Value="joinGameModel!.UserEmail" />
+                        </EditForm>
+                    </div>
+                    <div class="col">
+                        <button @onclick="JoinGame" type="button" class="btn btn-primary massive-button">Join
+                            Game</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+<!-- Image element - set the background image for the header in the line below-->
+<div class="py-5 bg-image-full" style="background-image: url('https://source.unsplash.com/4ulffa6qoKA/1200x800')">
+    <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+    <div style="height: 20rem"></div>
 </div>
-<div class="form-group">
-    <label>
-        Message:
-        <input @bind="messageInput" size="50" />
-    </label>
-</div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+<!-- Content section-->
+<section class="py-5">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <h2>Skeletal System Increment</h2>
+                <p class="lead">You're here to see a demo of the subsystem infaces and messages</p>
+                <div class="row">
+                    <div class="col">
+                        <p class="mb-0">Voluptate esse ullamco officia adipisicing tempor. Occaecat amet est
+                            reprehenderit
+                            aliquip magna aute ex Lorem irure elit cillum velit laboris. Dolor veniam officia sit
+                            incididunt
+                            adipisicing nostrud ad ea esse sit. Fugiat ad reprehenderit pariatur dolore laboris ea est
+                            mollit
+                            commodo nostrud aliquip. Id do id Lorem dolor cillum enim exercitation ad enim enim ex id
+                            veniam.
+                        </p>
+                    </div>
 
-<hr>
-
-<ul id="messagesList">
-    <Iterations Items="messages">
-        <li>@context</li>
-    </Iterations>
-</ul>
+                </div>
+                <div class="row justify-content-center">
+                    <a class="btn btn-primary massive-button" href="/admin">Take me to the demo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
