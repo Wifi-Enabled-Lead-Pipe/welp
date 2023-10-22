@@ -42,14 +42,22 @@ public class ServerHubService : IServerHubService
                 await gameHub.Clients
                     .Client(kv.Key)
                     .SendAsync("ServerToSpecificClient", request.Message);
-                return new PrivateMessageResponse() { Message = request.Message };
+                return new PrivateMessageResponse()
+                {
+                    Recipient = kv.Value,
+                    Message = request.Message
+                };
             }
             if (kv.Value.ToLower() == request.IdOrUserName.ToLower())
             {
                 await gameHub.Clients
                     .Client(kv.Key)
                     .SendAsync("ServerToSpecificClient", request.Message);
-                return new PrivateMessageResponse() { Message = request.Message };
+                return new PrivateMessageResponse()
+                {
+                    Recipient = kv.Value,
+                    Message = request.Message
+                };
             }
         }
         return new PrivateMessageResponse()
