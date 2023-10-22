@@ -40,9 +40,20 @@ public class ServerHubController : Controller, IServerHubService
 
     [HttpPost]
     [Route("send-private-message")]
-    public Task<PrivateMessageResponse> SendPrivateMessage(PrivateMessageRequest request)
+    public async Task<PrivateMessageResponse> SendPrivateMessage(PrivateMessageRequest request)
     {
-        throw new NotImplementedException();
+        await serverHubService.SendPrivateMessage(
+            new PrivateMessageRequest()
+            {
+                IdOrUserName = request.IdOrUserName,
+                Message = request.Message
+            }
+        );
+        return new PrivateMessageResponse()
+        {
+            Recipient = request.IdOrUserName,
+            Message = request.Message
+        };
     }
 
     public async Task<PlayerActionResponse> ValidatePlayerAction(PlayerActionRequest request)
