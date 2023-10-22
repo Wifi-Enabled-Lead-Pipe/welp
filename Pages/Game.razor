@@ -1,0 +1,78 @@
+@page "/game"
+
+
+<PageTitle>Welp-Admin</PageTitle>
+<div class="row">
+  <div class="col">
+    <img class="game-board" src="images/game-board.png" alt="..." />
+  </div>
+  <div class="col">
+    <BSRow>
+      <BSCol>
+        <BSAccordion class="pt-5 pe-5">
+          <BSAccordionItem>
+            <Header><strong>
+                Player Actions
+              </strong></Header>
+            <Content>
+              <BSRow Justify="Justify.Center">
+                <p class="lead">
+                  The application logic isn't in place.
+                </p>
+                <p class="mb-0">
+                  However, this action follows the complete player action submission, validation, and communication loop
+                  outlined at a high level in the appendix of the updated SRS.
+                </p>
+                <button @onclick="SendInvalidOperation" type="button" class="btn btn-warning massive-button"
+                  style="width: 300px">Send
+                  Invalid Operation</button>
+                <button @onclick="SendValidOperation" type="button" class="btn btn-success massive-button ms-2"
+                  style="width: 300px">Send
+                  Valid Operation</button>
+              </BSRow>
+            </Content>
+          </BSAccordionItem>
+          <BSAccordionItem>
+            <Header><strong>Guess Sheet</strong></Header>
+            <Content>
+              [Guess Sheet Component]
+            </Content>
+          </BSAccordionItem>
+
+        </BSAccordion>
+      </BSCol>
+    </BSRow>
+    <BSRow class="mt-3">
+      <BSCol>
+        <BSAccordion class="pt-5 pe-5">
+          <BSAccordionItem>
+            <Header><strong>Private Messages</strong></Header>
+            <Content>
+              <ul>
+                @foreach (var message in privateMessages)
+                {
+                  <li>@message</li>
+                }
+              </ul>
+            </Content>
+          </BSAccordionItem>
+          <BSAccordionItem>
+            <Header><strong>
+                Broadcast Messages
+              </strong></Header>
+            <Content>
+
+              <ul id="messagesList">
+                @foreach (var message in broadcastMessages)
+                {
+                  <li>@message</li>
+                }
+              </ul>
+            </Content>
+          </BSAccordionItem>
+        </BSAccordion>
+      </BSCol>
+    </BSRow>
+
+  </div>
+</div>

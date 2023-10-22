@@ -1,60 +1,31 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
+using Welp.GameLobby;
 
 namespace Welp.Pages;
 
 public partial class Index
 {
-    private HubConnection? hubConnection;
-    private List<string> messages = new List<string>();
-    private string? userInput;
-    private string? messageInput;
+    [Inject]
+    public NavigationManager? navigationManager { get; set; }
+    public NewGameModel newGameModel { get; set; } = new();
+    public JoinGameModel joinGameModel { get; set; } = new();
+    public Random r = new Random();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync() { }
+
+    public async ValueTask DisposeAsync() { }
+
+    private void CreateGame()
     {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(
-                Navigation.ToAbsoluteUri("/gamehub"),
-                conf =>
-                {
-                    conf.HttpMessageHandlerFactory = (x) =>
-                        new HttpClientHandler
-                        {
-                            ServerCertificateCustomValidationCallback =
-                                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
-                        };
-                }
-            )
-            .Build();
-
-        hubConnection.On<string, string>(
-            "ReceiveMessage",
-            (user, message) =>
-            {
-                var encodedMsg = $"{user}: {message}";
-                messages.Add(encodedMsg);
-                InvokeAsync(StateHasChanged);
-            }
-        );
-
-        await hubConnection.StartAsync();
+        var username =
+            newGameModel.UserName == string.Empty ? r.Next().ToString() : newGameModel.UserName;
+        navigationManager?.NavigateTo($"game?username={username}");
     }
 
-    private async Task Send()
+    private void JoinGame()
     {
-        if (hubConnection is not null)
-        {
-            await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-        }
-    }
-
-    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
-
-    public async ValueTask DisposeAsync()
-    {
-        if (hubConnection is not null)
-        {
-            await hubConnection.DisposeAsync();
-        }
+        var username =
+            joinGameModel.UserName == string.Empty ? r.Next().ToString() : joinGameModel.UserName;
+        navigationManager?.NavigateTo($"game?username={username}");
     }
 }
