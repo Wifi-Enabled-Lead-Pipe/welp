@@ -1,23 +1,34 @@
 using Microsoft.AspNetCore.SignalR;
+using Welp.Pages;
+using Welp.ServerHub.Models;
 
 namespace Welp.Hubs;
 
-public class GameHub : Hub, IGameHub
+public class GameHub : Hub
 {
-    // public async Task SendMessage(string user, string message)
-    // {
-    //     await Clients.All.SendAsync("ReceiveMessage", user, message);
-    // }
-    public async Task<string> ServerToAllClients(string message)
+    private readonly ConnectionService connectionService;
+
+    public GameHub(ConnectionService connectionService)
     {
-        await Clients.All.SendAsync("ServerToAllClients", message);
-        return message;
+        this.connectionService = connectionService;
     }
 
-    public async Task<string> ServerToSpecificClient(string clientId, string message)
+    public override Task OnConnectedAsync()
     {
-        var client = Clients.Client(clientId);
-        await client.SendAsync("ServerToSpecificClient", message);
-        return message;
+        string username = Context.GetHttpContext().Request.Query["username"];
+        var existingConnection = connectionService.Connections.FirstOrDefault(
+            kv => kv.Value.ToLower() == username.ToLower()
+        );
+
+        if (existingConnection.Key is not null)
+        {
+            connectionService.Connections.Remove(existingConnection.Key);
+        }
+
+        connectionService.Connections.Add(
+            Context.ConnectionId,
+            username == string.Empty || username is null ? "anonymous" : username
+        );
+        return base.OnConnectedAsync();
     }
 }

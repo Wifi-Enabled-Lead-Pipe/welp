@@ -80,3 +80,7 @@ input {
     margin-top: 10px;
     width: 100%;
 }
+
+.accordion-body {
+    min-height: 200px;
+}

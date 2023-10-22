@@ -23,9 +23,11 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazorStrap();
+
+builder.Services.AddSingleton<ConnectionService>();
 builder.Services.AddTransient<IGameLobbyService, GameLobbyService>();
 builder.Services.AddTransient<IPostLaunchService, PostLaunchService>();
-builder.Services.AddTransient<IServerDataService, ServerDataService>();
+builder.Services.AddSingleton<IServerDataService, ServerDataService>();
 builder.Services.AddTransient<IServerHubService, ServerHubService>();
 builder.Services.AddTransient<IServerLogicService, ServerLogicService>();
 

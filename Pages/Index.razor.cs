@@ -7,24 +7,25 @@ public partial class Index
 {
     [Inject]
     public NavigationManager? navigationManager { get; set; }
-    public NewGameModel? newGameModel { get; set; }
-    public JoinGameModel? joinGameModel { get; set; }
+    public NewGameModel newGameModel { get; set; } = new();
+    public JoinGameModel joinGameModel { get; set; } = new();
+    public Random r = new Random();
 
-    protected override async Task OnInitializedAsync()
-    {
-        newGameModel = new();
-        joinGameModel = new();
-    }
+    protected override async Task OnInitializedAsync() { }
 
     public async ValueTask DisposeAsync() { }
 
     private void CreateGame()
     {
-        navigationManager?.NavigateTo("game");
+        var username =
+            newGameModel.UserName == string.Empty ? r.Next().ToString() : newGameModel.UserName;
+        navigationManager?.NavigateTo($"game?username={username}");
     }
 
     private void JoinGame()
     {
-        navigationManager?.NavigateTo("game");
+        var username =
+            joinGameModel.UserName == string.Empty ? r.Next().ToString() : newGameModel.UserName;
+        navigationManager?.NavigateTo($"game?username={username}");
     }
 }

@@ -48,8 +48,8 @@
                 <div class="row">
                     <div class="col">
                         <EditForm Model="@joinGameModel">
-                            <InputText @bind-Value="joinGameModel!.UserName" />
-                            <InputText @bind-Value="joinGameModel!.UserEmail" />
+                            <InputText @bind-Value="joinGameModel!.UserName" placeholder="User Name" />
+                            <InputText @bind-Value="joinGameModel!.UserEmail" placeholder="User Email" />
                         </EditForm>
                     </div>
                     <div class="col">
@@ -59,8 +59,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </section>
 <!-- Image element - set the background image for the header in the line below-->
@@ -87,7 +85,6 @@
                             veniam.
                         </p>
                     </div>
-
                 </div>
                 <div class="row justify-content-center">
                     <a class="btn btn-primary massive-button" href="/admin">Take me to the demo</a>
