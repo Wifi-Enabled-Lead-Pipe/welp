@@ -2,5 +2,5 @@ namespace Welp.ServerData;
 
 public interface IServerDataService
 {
-    Task<PlayerActionValidationOutput> ValidatePlayerAction(PlayerActionInput input);
+    Task<PlayerActionValidationOutput> ValidatePlayerAction(Game game, PlayerActionInput input);
 }
