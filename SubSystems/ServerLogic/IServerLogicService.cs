@@ -6,6 +6,6 @@ public interface IServerLogicService
 {
     Task<PlayerActionValidationOutput> ValidatePlayerAction(
         PlayerActionInput actionInput,
-        GameState gameState
+        Game gameState
     );
 }

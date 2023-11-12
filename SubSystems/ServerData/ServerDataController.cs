@@ -12,9 +12,13 @@ public class ServerDataController : Controller, IServerDataService
         this.serverDataService = gameDataService;
     }
 
-    public async Task<PlayerActionValidationOutput> ValidatePlayerAction(PlayerActionInput input)
+    public async Task<PlayerActionValidationOutput> ValidatePlayerAction(
+        Game game,
+        PlayerActionInput input
+    )
     {
         return await serverDataService.ValidatePlayerAction(
+            game,
             new PlayerActionInput() { IsValid = input.IsValid }
         );
     }
