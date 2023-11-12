@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json;
 using Welp.ServerHub;
 using Welp.ServerHub.Models;
 
@@ -102,5 +104,29 @@ public partial class Game
         await serverHubService.ValidatePlayerAction(
             new PlayerActionRequest() { IdOrUserName = IdOrUserName, ValidAction = true }
         );
+    }
+
+    private void HandleDragEnter(DragEventArgs eventArgs)
+    {
+        Console.WriteLine("HandleDragEnter");
+        Console.WriteLine(JsonConvert.SerializeObject(eventArgs));
+    }
+
+    private void HandleDragLeave(DragEventArgs eventArgs)
+    {
+        Console.WriteLine("HandleDragLeave");
+        Console.WriteLine(JsonConvert.SerializeObject(eventArgs));
+    }
+
+    private void HandleDrop(DragEventArgs eventArgs, (int, int) room)
+    {
+        Console.WriteLine("HandleDrop : " + room.ToString());
+        Console.WriteLine(JsonConvert.SerializeObject(eventArgs));
+    }
+
+    private bool IsThisMyPiece(string str)
+    {
+        Console.WriteLine($"IsThisMyPiece: {str} : {str == "blue"}");
+        return str == "blue";
     }
 }
