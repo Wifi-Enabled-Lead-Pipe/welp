@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
+using System.Diagnostics.Contracts;
+using System.Runtime.Serialization;
 using Welp.ServerData;
 using Welp.ServerHub;
 using Welp.ServerHub.Models;
@@ -16,11 +18,15 @@ public partial class Game
     public string? ConnectionId { get; set; }
     public ServerData.Game State { get; set; } = new();
     public GuessSheet Sheet { get; set; } = new();
+    public ActionOptions CurrentOptions { get; set; } = new();
+    public ActionRecord ActionRecord { get; set; } = new();
 
     public bool IAmScarlett =>
         Host
         || State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId)?.Character
             == Character.MissScarlet;
+
+    public bool IsPlayerTurn => State.CurrentPlayer.User.ConnectionId == ConnectionId;
 
     [Inject]
     private NavigationManager? navigationManager { get; set; }
@@ -138,6 +144,23 @@ public partial class Game
     {
         await serverHubService.ValidatePlayerAction(
             new PlayerActionRequest() { IdOrUserName = IdOrUserName, ValidAction = true }
+        );
+    }
+
+    public async Task GetActionOptions()
+    {
+        CurrentOptions = await serverHubService.GetActionOptions();
+    }
+
+    public async Task SubmitPlayerAction()
+    {
+        await serverHubService.SubmitPlayerAction(
+            new PlayerActionRequest()
+            {
+                IdOrUserName = IdOrUserName,
+                Action = ActionRecord,
+                ValidAction = true
+            }
         );
     }
 

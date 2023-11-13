@@ -28,6 +28,7 @@ public class ServerDataService : IServerDataService
         State = new Game();
         State.Players = AssignPlayers(users);
         State.GameBoard = InitializeGameBoard(State.Players);
+        State.CurrentPlayer = State.Players[0];
         return State.Clone();
     }
 
@@ -35,6 +36,12 @@ public class ServerDataService : IServerDataService
     {
         game.ActionRegister.Add(game.ActionRegister.Count, action);
         State = game.Clone();
+        if (action.ActionType == ActionType.EndTurn)
+        {
+            State.CurrentPlayer = game.Players[
+                (game.Players.IndexOf(game.CurrentPlayer) + 1) % game.Players.Count
+            ];
+        }
         return State.Clone();
     }
 
@@ -53,6 +60,11 @@ public class ServerDataService : IServerDataService
             );
         }
         return players;
+    }
+
+    public Task<ActionOptions> GetActionOptions(Game game, Player player)
+    {
+        return serverLogicService.GenerateActionOptions(game, player);
     }
 
     public GameBoard InitializeGameBoard(List<Player> players)

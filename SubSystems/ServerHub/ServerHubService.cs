@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Welp.Hubs;
 using Welp.ServerData;
 using Welp.ServerHub.Models;
+using Welp.ServerLogic;
 
 namespace Welp.ServerHub;
 
@@ -66,10 +67,30 @@ public class ServerHubService : IServerHubService
         };
     }
 
+    public async Task<ActionOptions> GetActionOptions()
+    {
+        Game game = serverDataService.GetGameState();
+        var actionOptions = await serverDataService.GetActionOptions(game, game.CurrentPlayer);
+        return actionOptions;
+    }
+
+    public async Task<PlayerActionResponse> SubmitPlayerAction(PlayerActionRequest request)
+    {
+        var output = serverDataService.UpdateGame(serverDataService.GetGameState(), request.Action);
+
+        await BroadcastMessage(
+            new BroadcastRequest()
+            {
+                Message = $"Player: {request.IdOrUserName} took action {request.Action}."
+            }
+        );
+        return await Task.FromResult(new PlayerActionResponse() { Status = "valid" });
+    }
+
     public async Task<PlayerActionResponse> ValidatePlayerAction(PlayerActionRequest request)
     {
-        var output = await this.serverDataService.ValidatePlayerAction(
-            this.serverDataService.GetGameState(),
+        var output = await serverDataService.ValidatePlayerAction(
+            serverDataService.GetGameState(),
             new PlayerActionInput() { IsValid = request.ValidAction }
         );
         var response = new PlayerActionResponse() { Status = output.Status };

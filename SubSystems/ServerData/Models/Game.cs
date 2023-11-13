@@ -9,6 +9,7 @@ namespace Welp.ServerData
         public GameRoom GameRoom { get; set; } = new(); // player current room
         public GameBoard GameBoard { get; set; } = new(); // current board
         public Dictionary<int, ActionRecord> ActionRegister { get; set; } = new();
+        public Player CurrentPlayer { get; set; } = new();
 
         public Game Clone() =>
             JsonConvert.DeserializeObject<Game>(JsonConvert.SerializeObject(this))

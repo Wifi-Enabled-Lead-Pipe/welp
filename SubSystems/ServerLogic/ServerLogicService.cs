@@ -21,11 +21,13 @@ public class ServerLogicService : IServerLogicService
         );
     }
 
-    public ActionOptions GenerateActionOptions(Game gameState, Player player)
+    public async Task<ActionOptions> GenerateActionOptions(Game gameState, Player player)
     {
         ActionOptions currentOptions = new ActionOptions();
-
-        if (gameState.ActionRegister.Values.Last().Player == player)
+        if (
+            gameState.ActionRegister.Count > 0
+            && gameState.ActionRegister.Values.Last().Player == player
+        )
         {
             if (gameState.ActionRegister.Values.Last().ActionType == ActionType.MoveRoom)
             {
@@ -59,13 +61,17 @@ public class ServerLogicService : IServerLogicService
             {
                 ActionType = ActionType.Accusation
             };
-            currentOptions.Movement = GenerateMovementOptions(gameState, player);
+            currentOptions.Movement = await GenerateMovementOptions(gameState, player);
         }
+        currentOptions.EndTurn = new ActionOption<bool>() { ActionType = ActionType.EndTurn };
 
-        return currentOptions;
+        return await Task.FromResult(currentOptions);
     }
 
-    public List<ActionOption<Movement>> GenerateMovementOptions(Game gameState, Player player)
+    public async Task<List<ActionOption<Movement>>> GenerateMovementOptions(
+        Game gameState,
+        Player player
+    )
     {
         List<ActionOption<Movement>> movementOptions = new List<ActionOption<Movement>>();
 
@@ -142,6 +148,6 @@ public class ServerLogicService : IServerLogicService
             }
         }
 
-        return movementOptions;
+        return await Task.FromResult(movementOptions);
     }
 }

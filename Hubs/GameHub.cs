@@ -26,8 +26,8 @@ public class GameHub : Hub
         }
 
         connectionService.Connections.Add(
-            Context.ConnectionId,
-            username == string.Empty || username is null ? "anonymous" : username
+            username == string.Empty || username is null ? "anonymous" : username,
+            Context.ConnectionId
         );
         return base.OnConnectedAsync();
     }
