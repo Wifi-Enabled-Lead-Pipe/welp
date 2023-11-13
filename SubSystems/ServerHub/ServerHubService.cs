@@ -69,6 +69,7 @@ public class ServerHubService : IServerHubService
     public async Task<PlayerActionResponse> ValidatePlayerAction(PlayerActionRequest request)
     {
         var output = await this.serverDataService.ValidatePlayerAction(
+            this.serverDataService.GetGameState(),
             new PlayerActionInput() { IsValid = request.ValidAction }
         );
         var response = new PlayerActionResponse() { Status = output.Status };

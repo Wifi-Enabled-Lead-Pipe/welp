@@ -6,7 +6,7 @@ namespace Welp.ServerData
     {
         public UserConnection User { get; set; }
         public Character Character { get; set; }
-        public (int, int) Position { get; set; }
+        public (int x, int y) Position { get; set; }
     }
 
     public enum Character

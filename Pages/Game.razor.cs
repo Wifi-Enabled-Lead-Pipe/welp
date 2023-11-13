@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
+using Welp.ServerData;
 using Welp.ServerHub;
 using Welp.ServerHub.Models;
 
@@ -11,6 +12,8 @@ namespace Welp.Pages;
 public partial class Game
 {
     private HubConnection? hubConnection { get; set; }
+    public ServerData.Game State { get; set; } = new();
+    public GuessSheet Sheet { get; set; } = new();
 
     [Inject]
     private NavigationManager? navigationManager { get; set; }
@@ -25,6 +28,7 @@ public partial class Game
     protected override async Task OnInitializedAsync()
     {
         var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
+
         IdOrUserName = QueryHelpers
             .ParseQuery(uri.Query)
             .FirstOrDefault(kv => kv.Key.ToLower() == "username")
@@ -63,8 +67,9 @@ public partial class Game
             "ServerToAllClients",
             (message) =>
             {
-                var encodedMsg = $"ServerToAllClients: {message}";
-                broadcastMessages.Add(encodedMsg);
+                State =
+                    JsonConvert.DeserializeObject<ServerData.Game>(message)
+                    ?? throw new Exception("Unable to Deserialize Game");
                 StateHasChanged();
             }
         );
@@ -95,7 +100,7 @@ public partial class Game
     public async Task SendInvalidOperation()
     {
         await serverHubService.ValidatePlayerAction(
-            new PlayerActionRequest() { IdOrUserName = IdOrUserName, ValidAction = false, }
+            new PlayerActionRequest() { IdOrUserName = IdOrUserName, ValidAction = true, }
         );
     }
 
@@ -128,5 +133,33 @@ public partial class Game
     {
         Console.WriteLine($"IsThisMyPiece: {str} : {str == "blue"}");
         return str == "blue";
+    }
+}
+
+public class GuessSheet
+{
+    public Dictionary<Character, List<bool>> Suspects { get; set; }
+    public Dictionary<RoomName, List<bool>> Rooms { get; set; }
+    public Dictionary<Weapon, List<bool>> Weapons { get; set; }
+
+    public GuessSheet()
+    {
+        Suspects = new();
+        foreach (var item in Enum.GetValues<Character>())
+        {
+            Suspects.Add(item, new List<bool>() { true, true, true, true, true });
+        }
+
+        Rooms = new();
+        foreach (var item in Enum.GetValues<RoomName>())
+        {
+            Rooms.Add(item, new List<bool>() { true, true, true, true, true });
+        }
+
+        Weapons = new();
+        foreach (var item in Enum.GetValues<Weapon>())
+        {
+            Weapons.Add(item, new List<bool>() { true, true, true, true, true });
+        }
     }
 }

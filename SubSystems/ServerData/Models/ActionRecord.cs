@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using BlazorStrap;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Welp.ServerData;
 
 namespace Welp.ServerData
@@ -16,5 +17,23 @@ namespace Welp.ServerData
         MoveHallway = 1,
         Suggestion = 2,
         Accusation = 3
+    }
+
+    public class Movement
+    {
+        public (int x, int y) NewPosition { get; set; }
+    }
+
+    public class Suggestion
+    {
+        public Weapon Weapon { get; set; }
+        public Character Character { get; set; }
+    }
+
+    public class Accusation
+    {
+        public Weapon Weapon { get; set; }
+        public Character Character { get; set; }
+        public RoomName Room { get; set; }
     }
 }
