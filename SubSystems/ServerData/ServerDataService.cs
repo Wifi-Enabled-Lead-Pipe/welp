@@ -1,5 +1,4 @@
 using Welp.ServerLogic;
-using Welp.GameLobby;
 using Welp.ServerHub;
 
 namespace Welp.ServerData;
@@ -52,7 +51,6 @@ public class ServerDataService : IServerDataService
                     Position = ServerDataGlobals.CharacterInitialPositions[(Character)i]
                 }
             );
-            ;
         }
         return players;
     }
