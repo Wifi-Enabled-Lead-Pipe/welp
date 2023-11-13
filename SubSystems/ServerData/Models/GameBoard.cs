@@ -11,7 +11,7 @@
             {
                 case RoomName.Study:
                     adjGameRooms.Add(
-                        new GameRoom() 
+                        new GameRoom()
                         {
                             RoomName = RoomName.Hall,
                             Position = (0, 2),
@@ -29,7 +29,7 @@
                     break;
                 case RoomName.Hall:
                     adjGameRooms.Add(
-                        new GameRoom() 
+                        new GameRoom()
                         {
                             RoomName = RoomName.Study,
                             Position = (-2, 2),
@@ -55,7 +55,7 @@
                     break;
                 case RoomName.Lounge:
                     adjGameRooms.Add(
-                        new GameRoom() 
+                        new GameRoom()
                         {
                             RoomName = RoomName.Hall,
                             Position = (0, 2),
@@ -73,7 +73,7 @@
                     break;
                 case RoomName.Library:
                     adjGameRooms.Add(
-                        new GameRoom() 
+                        new GameRoom()
                         {
                             RoomName = RoomName.Study,
                             Position = (-2, 2),
@@ -95,11 +95,11 @@
                             Position = (-2, -2),
                             HasSecretPassageway = true
                         }
-                    )
+                    );
                     break;
                 case RoomName.BilliardRoom:
                     adjGameRooms.Add(
-                        new GameRoom() 
+                        new GameRoom()
                         {
                             RoomName = RoomName.Hall,
                             Position = (0, 2),
@@ -129,11 +129,11 @@
                             Position = (0, -2),
                             HasSecretPassageway = false
                         }
-                    )
+                    );
                     break;
                 case RoomName.DiningRoom:
                     adjGameRooms.Add(
-                        new GameRoom() 
+                        new GameRoom()
                         {
                             RoomName = RoomName.Lounge,
                             Position = (2, 2),
@@ -155,7 +155,7 @@
                             Position = (2, -2),
                             HasSecretPassageway = true
                         }
-                    )
+                    );
                     break;
                 case RoomName.Conservatory:
                     adjGameRooms.Add(
@@ -173,7 +173,7 @@
                             Position = (0, -2),
                             HasSecretPassageway = false
                         }
-                    )
+                    );
                     break;
                 case RoomName.Ballroom:
                     adjGameRooms.Add(
@@ -199,7 +199,7 @@
                             Position = (2, -2),
                             HasSecretPassageway = true
                         }
-                    )
+                    );
                     break;
                 case RoomName.Kitchen:
                     adjGameRooms.Add(
@@ -217,7 +217,7 @@
                             Position = (2, 0),
                             HasSecretPassageway = false
                         }
-                    )
+                    );
                     break;
             }
             return adjGameRooms;
