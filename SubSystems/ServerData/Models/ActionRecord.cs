@@ -1,14 +1,13 @@
 ﻿using BlazorStrap;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Welp.ServerData;
-using System.Collections.Generic;
 
 namespace Welp.ServerData
 {
-    public class ActionRecord<T>
+    public class ActionRecord
     {
         public ActionType ActionType { get; set; }
-        public T ActionDetails { get; set; }
+        public Dictionary<string, string> ActionDetails { get; set; }
         public Player Player { get; set; }
     }
 

@@ -26,25 +26,40 @@ public class ServerLogicService : IServerLogicService
     {
         ActionOptions currentOptions = new ActionOptions();
 
-        if(gameState.ActionRegister.Values.Last().Player == player)
+        if (gameState.ActionRegister.Values.Last().Player == player)
         {
             if (gameState.ActionRegister.Values.Last().ActionType == ActionType.MoveRoom)
             {
                 // the player just moved into a room during their turn, now they can make a suggestion or accusation (or end turn)
-                currentOptions.Suggestion = new ActionOption<Suggestion>() { ActionType = ActionType.Suggestion };
-                currentOptions.Accusation = new ActionOption<Accusation>() { ActionType = ActionType.Accusation };
+                currentOptions.Suggestion = new ActionOption<Suggestion>()
+                {
+                    ActionType = ActionType.Suggestion
+                };
+                currentOptions.Accusation = new ActionOption<Accusation>()
+                {
+                    ActionType = ActionType.Accusation
+                };
             }
             else if (gameState.ActionRegister.Values.Last().ActionType == ActionType.Suggestion)
             {
                 // the player just made a suggestion, now their only option is to make an accusation (or end turn)
-                currentOptions.Accusation = new ActionOption<Accusation>() { ActionType = ActionType.Accusation };
+                currentOptions.Accusation = new ActionOption<Accusation>()
+                {
+                    ActionType = ActionType.Accusation
+                };
             }
         }
         else
         {
             // it is the beginning of the player's turn
-            currentOptions.Suggestion = new ActionOption<Suggestion>() { ActionType = ActionType.Suggestion };
-            currentOptions.Accusation = new ActionOption<Accusation>() { ActionType = ActionType.Accusation };
+            currentOptions.Suggestion = new ActionOption<Suggestion>()
+            {
+                ActionType = ActionType.Suggestion
+            };
+            currentOptions.Accusation = new ActionOption<Accusation>()
+            {
+                ActionType = ActionType.Accusation
+            };
             currentOptions.Movement = GenerateMovementOptions(gameState, player);
         }
 
@@ -55,8 +70,9 @@ public class ServerLogicService : IServerLogicService
     {
         List<ActionOption<Movement>> movementOptions = new List<ActionOption<Movement>>();
 
-        int playerInRoom = gameState.GameBoard.GameRooms
-            .FindIndex(r => r.Position == player.Position);
+        int playerInRoom = gameState.GameBoard.GameRooms.FindIndex(
+            r => r.Position == player.Position
+        );
 
         if (playerInRoom != -1)
         {
@@ -76,20 +92,26 @@ public class ServerLogicService : IServerLogicService
             }
 
             List<GameRoom> adjRooms = gameState.GameBoard.getAdjGameRooms(currRoom);
+            List<(int x, int y)> currPlayerPositions = gameState.Players.Select(p => p.Position).ToList();
             foreach (GameRoom adjRoom in adjRooms)
             {
-                // adding hallway coords for movement between curr room and adj rooms
+                // adding hallway coords for movement between curr room and adj rooms if hallway is not occupied
                 (int x, int y) newPosition = (
                     (currRoom.Position.x + adjRoom.Position.x) / 2,
                     (currRoom.Position.y + adjRoom.Position.y) / 2
                 );
-                movementOptions.Add(
-                    new ActionOption<Movement>()
-                    {
-                        ActionType = ActionType.MoveHallway,
-                        Details = new Movement() { NewPosition = newPosition }
-                    }
-                );
+
+                if (!currPlayerPositions.Contains(newPosition))
+                {
+                    movementOptions.Add(
+                        new ActionOption<Movement>()
+                        {
+                            ActionType = ActionType.MoveHallway,
+                            Details = new Movement() { NewPosition = newPosition }
+                        }
+                    );
+                }
+
             }
         }
         else
@@ -103,7 +125,11 @@ public class ServerLogicService : IServerLogicService
                 (player.Position.x + 1, player.Position.y)
             };
 
-            List<(int x, int y)> validMovements = gameState.GameBoard.GameRooms.Select(r => r.Position).ToList().Intersect(allMovements).ToList();
+            List<(int x, int y)> validMovements = gameState.GameBoard.GameRooms
+                .Select(r => r.Position)
+                .ToList()
+                .Intersect(allMovements)
+                .ToList();
             foreach ((int x, int y) position in validMovements)
             {
                 movementOptions.Add(
@@ -113,7 +139,6 @@ public class ServerLogicService : IServerLogicService
                         Details = new Movement() { NewPosition = position }
                     }
                 );
-
             }
         }
 

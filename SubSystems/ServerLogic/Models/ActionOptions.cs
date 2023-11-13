@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 namespace Welp.ServerLogic
 {
-    public class ActionOptions 
+    public class ActionOptions
     {
-        public List<ActionOption<Movement>>? Movement { get; set; } = null;
-        public ActionOption<Suggestion>? Suggestion { get; set; } = null;
-        public ActionOption<Accusation>? Accusation { get; set; } = null;
+        public List<ActionOption<Movement>>? Movement { get; set; }
+        public ActionOption<Suggestion>? Suggestion { get; set; }
+        public ActionOption<Accusation>? Accusation { get; set; }
     }
-
 
     public class ActionOption<T>
     {
