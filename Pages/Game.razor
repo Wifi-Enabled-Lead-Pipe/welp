@@ -10,7 +10,7 @@
         <BSRow Justify="Justify.Start">
           @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -18,7 +18,7 @@
         <BSRow Justify="Justify.Start">
           @foreach (var player in State.Players.Where(p => p.Position == (-1, 2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -26,7 +26,7 @@
         <BSRow Justify="Justify.Start">
           @foreach (var player in State.Players.Where(p => p.Position == (0, 2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -34,7 +34,7 @@
         <BSRow Justify="Justify.Start">
           @foreach (var player in State.Players.Where(p => p.Position == (1, 2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -42,7 +42,7 @@
         <BSRow Justify="Justify.Start">
           @foreach (var player in State.Players.Where(p => p.Position == (2, 2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -51,41 +51,41 @@
     <div>
       <div class="room x-2 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x-1 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x0 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x1 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x2 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -94,41 +94,41 @@
     <div>
       <div class="room x-2 y0">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x-1 y0">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x0 y0">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x1 y0">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x2 y0">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -137,41 +137,41 @@
     <div>
       <div class="room x-2 y-1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x-1 y-1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x0 y-1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x1 y-1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x2 y-1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
@@ -180,47 +180,45 @@
     <div>
       <div class="room x-2 y-2">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x-1 y-2">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x0 y-2">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x1 y-2">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
       <div class="room x2 y-2">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
           {
-            <div class="piece" id="@player.Character"></div>
+            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
         </BSRow>
       </div>
     </div>
-
-
 
   </div>
   <div class="col">
