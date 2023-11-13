@@ -1,13 +1,18 @@
 ﻿using BlazorStrap;
+using Newtonsoft.Json;
 
 namespace Welp.ServerData
 {
     public class Game
     {
-        public List<Player> Players { get; set; }
+        public List<Player> Players { get; set; } = new();
         public GameRoom GameRoom { get; set; } = new(); // player current room
         public GameBoard GameBoard { get; set; } = new(); // current board
-        public Dictionary<int, ActionRecord> ActionRegister { get; set; }
+        public Dictionary<int, ActionRecord> ActionRegister { get; set; } = new();
+
+        public Game Clone() =>
+            JsonConvert.DeserializeObject<Game>(JsonConvert.SerializeObject(this))
+            ?? throw new Exception("Unable To Clone Game");
 
         public bool isOccupied(GameRoom gameRoom, List<Player> players)
         {

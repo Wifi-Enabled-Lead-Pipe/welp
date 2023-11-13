@@ -6,7 +6,7 @@ public class ServerLogicService : IServerLogicService
 {
     public async Task<PlayerActionValidationOutput> ValidatePlayerAction(
         PlayerActionInput actionInput,
-        GameState gameState
+        Game gameState
     )
     {
         if (actionInput.IsValid)
