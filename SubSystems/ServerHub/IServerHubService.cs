@@ -1,4 +1,5 @@
 using Welp.ServerHub.Models;
+using Welp.ServerLogic;
 
 namespace Welp.ServerHub;
 
@@ -8,4 +9,5 @@ public interface IServerHubService
     Task<PrivateMessageResponse> SendPrivateMessage(PrivateMessageRequest request);
 
     Task<PlayerActionResponse> ValidatePlayerAction(PlayerActionRequest request);
+    Task RestartGame();
 }

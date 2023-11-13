@@ -19,7 +19,7 @@ public partial class Index
     {
         var username =
             newGameModel.UserName == string.Empty ? r.Next().ToString() : newGameModel.UserName;
-        navigationManager?.NavigateTo($"game?username={username}");
+        navigationManager?.NavigateTo($"game?username={username}&host=true");
     }
 
     private void JoinGame()

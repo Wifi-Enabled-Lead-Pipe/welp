@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using Welp.Hubs;
 using Welp.ServerData;
 using Welp.ServerHub.Models;
@@ -9,7 +10,6 @@ public class ServerHubService : IServerHubService
 {
     private readonly IHubContext<GameHub> gameHub;
     private readonly ConnectionService connectionService;
-
     private readonly IServerDataService serverDataService;
 
     public ServerHubService(
@@ -95,5 +95,11 @@ public class ServerHubService : IServerHubService
         }
 
         return await Task.FromResult(response);
+    }
+
+    public async Task RestartGame()
+    {
+        var game = serverDataService.InitializeNewGame(connectionService.UserConnections);
+        await gameHub.Clients.All.SendAsync("GameUpdated", JsonConvert.SerializeObject(game));
     }
 }

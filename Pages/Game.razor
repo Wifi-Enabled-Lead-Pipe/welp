@@ -59,7 +59,7 @@
       </div>
       <div class="room x-1 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
+          @foreach (var player in State.Players.Where(p => p.Position == (-1, 1)))
           {
             <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
@@ -67,7 +67,7 @@
       </div>
       <div class="room x0 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
+          @foreach (var player in State.Players.Where(p => p.Position == (0, 1)))
           {
             <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
@@ -75,7 +75,7 @@
       </div>
       <div class="room x1 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
+          @foreach (var player in State.Players.Where(p => p.Position == (1, 1)))
           {
             <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
@@ -83,7 +83,7 @@
       </div>
       <div class="room x2 y1">
         <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
+          @foreach (var player in State.Players.Where(p => p.Position == (2, 1)))
           {
             <div class="piece" id="@("character-"+player.Character.ToString())"></div>
           }
@@ -225,6 +225,27 @@
     <BSRow>
       <BSCol>
         <BSAccordion class="pt-5 pe-5">
+          @if (IAmScarlett)
+          {
+            <BSAccordionItem>
+              <Header><strong>
+                  Host Actions
+                </strong></Header>
+              <Content>
+                <BSRow Justify="Justify.Center">
+                  <p class="lead">
+                    You are the host, would you like to start/reset the game?
+                  </p>
+                  <button @onclick="RestartGame" type="button" class="btn btn-success massive-button"
+                    style="width: 300px">Start
+                  </button>
+                  <button @onclick="RestartGame" type="button" class="btn btn-warning massive-button ms-2"
+                    style="width: 300px">Restart
+                  </button>
+                </BSRow>
+              </Content>
+            </BSAccordionItem>
+          }
           <BSAccordionItem>
             <Header><strong>
                 Player Actions

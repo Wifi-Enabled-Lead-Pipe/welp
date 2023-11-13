@@ -10,7 +10,7 @@
 
 .room {
   position: absolute;
-  border: 5px solid blue;
+  border: 2px dashed blue;
   height: 125px;
   width: 125px;
   word-wrap: break-word;
@@ -63,6 +63,9 @@
   height: 30px;
   width: 30px;
   border-radius: 10%;
+  opacity: 1;
+  margin-top: 50px;
+  margin-left: 10px;
 
   z-index: 100;
 }
@@ -71,6 +74,27 @@
   background-color: blue;
 }
 
-#red {
+#character-MissScarlet {
   background-color: red;
+}
+
+#character-ProfessorPlum {
+  background-color: violet;
+}
+
+#character-ColonelMustard {
+  background-color: gold;
+}
+
+#character-MrsPeacock {
+  background-color: blue;
+}
+
+#character-MrGreen {
+  background-color: green;
+}
+
+#character-MrsWhite {
+  border: 1px dashed black;
+  background-color: white;
 }

@@ -8,4 +8,6 @@ public interface IServerLogicService
         PlayerActionInput actionInput,
         Game gameState
     );
+    ActionOptions GenerateActionOptions(Game gameState, Player player);
+    List<ActionOption<Movement>> GenerateMovementOptions(Game gameState, Player player);
 }

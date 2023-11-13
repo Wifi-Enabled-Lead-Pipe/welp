@@ -1,5 +1,4 @@
 using Welp.ServerData;
-using System.Collections.Generic;
 
 namespace Welp.ServerLogic;
 
@@ -92,7 +91,9 @@ public class ServerLogicService : IServerLogicService
             }
 
             List<GameRoom> adjRooms = gameState.GameBoard.getAdjGameRooms(currRoom);
-            List<(int x, int y)> currPlayerPositions = gameState.Players.Select(p => p.Position).ToList();
+            List<(int x, int y)> currPlayerPositions = gameState.Players
+                .Select(p => p.Position)
+                .ToList();
             foreach (GameRoom adjRoom in adjRooms)
             {
                 // adding hallway coords for movement between curr room and adj rooms if hallway is not occupied
@@ -111,7 +112,6 @@ public class ServerLogicService : IServerLogicService
                         }
                     );
                 }
-
             }
         }
         else

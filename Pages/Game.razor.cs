@@ -6,33 +6,50 @@ using Newtonsoft.Json;
 using Welp.ServerData;
 using Welp.ServerHub;
 using Welp.ServerHub.Models;
+using Welp.ServerLogic;
 
 namespace Welp.Pages;
 
 public partial class Game
 {
     private HubConnection? hubConnection { get; set; }
+    public string? ConnectionId { get; set; }
     public ServerData.Game State { get; set; } = new();
     public GuessSheet Sheet { get; set; } = new();
+
+    public bool IAmScarlett =>
+        Host
+        || State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId)?.Character
+            == Character.MissScarlet;
 
     [Inject]
     private NavigationManager? navigationManager { get; set; }
 
     [Inject]
     private IServerHubService? serverHubService { get; set; }
+
+    // [Inject]
+    // private IServerDataService? serverDataService {get; set;}
+
+    // [Inject]
+    // private IServerLogicService? serverLogicService {get; set;}
+
     public List<string> privateMessages = new List<string>();
     public List<string> broadcastMessages = new List<string>();
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
     private string IdOrUserName = string.Empty;
+    private bool Host;
 
     protected override async Task OnInitializedAsync()
     {
         var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
 
-        IdOrUserName = QueryHelpers
-            .ParseQuery(uri.Query)
-            .FirstOrDefault(kv => kv.Key.ToLower() == "username")
-            .Value;
+        IdOrUserName = QueryHelpers.ParseQuery(uri.Query)["username"];
+        try
+        {
+            Host = QueryHelpers.ParseQuery(uri.Query)["host"] == "true";
+        }
+        catch (Exception e) { } // swallow
 
         hubConnection = new HubConnectionBuilder()
             .WithUrl(
@@ -64,12 +81,24 @@ public partial class Game
             .Build();
 
         hubConnection.On<string>(
-            "ServerToAllClients",
+            "GameUpdated",
             (message) =>
             {
+                Console.WriteLine("Game Updated!");
+                Console.WriteLine(message);
                 State =
                     JsonConvert.DeserializeObject<ServerData.Game>(message)
                     ?? throw new Exception("Unable to Deserialize Game");
+                StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
+            "ServerToAllClients",
+            (message) =>
+            {
+                var encodedMsg = $"ServerToAllClients: {message}";
+                broadcastMessages.Add(encodedMsg);
                 StateHasChanged();
             }
         );
@@ -85,6 +114,7 @@ public partial class Game
         );
 
         await hubConnection.StartAsync();
+        ConnectionId = hubConnection.ConnectionId;
     }
 
     public async ValueTask DisposeAsync()
@@ -111,28 +141,9 @@ public partial class Game
         );
     }
 
-    private void HandleDragEnter(DragEventArgs eventArgs)
+    public async Task RestartGame()
     {
-        Console.WriteLine("HandleDragEnter");
-        Console.WriteLine(JsonConvert.SerializeObject(eventArgs));
-    }
-
-    private void HandleDragLeave(DragEventArgs eventArgs)
-    {
-        Console.WriteLine("HandleDragLeave");
-        Console.WriteLine(JsonConvert.SerializeObject(eventArgs));
-    }
-
-    private void HandleDrop(DragEventArgs eventArgs, (int, int) room)
-    {
-        Console.WriteLine("HandleDrop : " + room.ToString());
-        Console.WriteLine(JsonConvert.SerializeObject(eventArgs));
-    }
-
-    private bool IsThisMyPiece(string str)
-    {
-        Console.WriteLine($"IsThisMyPiece: {str} : {str == "blue"}");
-        return str == "blue";
+        await serverHubService.RestartGame();
     }
 }
 
