@@ -1,7 +1,8 @@
 ﻿namespace Welp.ServerData
 {
     public class GameBoard
-    {        public List<GameRoom> GameRooms { get; set; }
+    {
+        public List<GameRoom> GameRooms { get; set; }
 
         public List<GameRoom> getAdjGameRooms(GameRoom gameRoom)
         {
@@ -9,7 +10,5 @@
             // TODO: add adjacent rooms
             return adjGameRooms;
         }
-
-
     }
 }

@@ -2,7 +2,10 @@
 {
     public static class ServerDataGlobals
     {
-        public static Dictionary<Character, (int, int)> CharacterInitialPositions = new Dictionary<Character, (int, int)>
+        public static Dictionary<Character, (int, int)> CharacterInitialPositions = new Dictionary<
+            Character,
+            (int, int)
+        >
         {
             { Character.MissScarlet, (1, 2) },
             { Character.ProfessorPlum, (-2, 1) },

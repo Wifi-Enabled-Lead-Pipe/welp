@@ -5,52 +5,222 @@
 <div class="row">
   <div class="col">
     <img class="game-board" src="images/game-board-2.png" alt="..." />
-
-    <div id="x0y4" class="room x-0 y-4" @ondrop="e => HandleDrop(e,(0,4))" ondragover="event.preventDefault();"
-      @ondragenter=" HandleDragEnter" @ondragleave="HandleDragLeave">
-      Study(0,4)
+    <div>
+      <div class="room x-2 y2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x-1 y2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-1, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x0 y2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (0, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x1 y2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (1, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x2 y2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
     </div>
-    <div class="room x-1 y-4">Hall(1,4)</div>
-    <div class="room x-2 y-4">Great Hall(2,4)</div>
-    <div class="room x-3 y-4">hall(3,4)</div>
-    <div class="room x-4 y-4">Lounge(4,4)</div>
 
-    <div class="room x-0 y-3">Hall(0,3)</div>
-    <div class="room x-1 y-3">Empty(1,3)</div>
-    <div class="room x-2 y-3">Hall(2,3)</div>
-    <div class="room x-3 y-3">Empty(3,3)</div>
-    <div class="room x-4 y-3">Hall(4,3)</div>
+    <div>
+      <div class="room x-2 y1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x-1 y1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x0 y1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x1 y1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x2 y1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+    </div>
 
-    <div class="room x-0 y-2">Library(0,2)</div>
-    <div class="room x-1 y-2">Hall(1,2)</div>
-    <div class="room x-2 y-2">Billiard(2,2)</div>
-    <div class="room x-3 y-2">Hall(3,2)</div>
-    <div class="room x-4 y-2">Dining(4,2)</div>
+    <div>
+      <div class="room x-2 y0">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x-1 y0">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x0 y0">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x1 y0">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x2 y0">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+    </div>
 
-    <div class="room x-0 y-1">Hall(0,1)</div>
-    <div class="room x-1 y-1">Empty(1,1)</div>
-    <div class="room x-2 y-1">Hall(2,1)</div>
-    <div class="room x-3 y-1">Empty(3,1)</div>
-    <div class="room x-4 y-1">Hall(4,1)</div>
+    <div>
+      <div class="room x-2 y-1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x-1 y-1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x0 y-1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x1 y-1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x2 y-1">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+    </div>
 
-    <div class="room x-0 y-0">Conservatory(0,0)</div>
-    <div class="room x-1 y-0">Hall(1,0)</div>
-    <div class="room x-2 y-0">Ballroom(2,0)</div>
-    <div class="room x-3 y-0">Hall(3,0)</div>
-    <div class="room x-4 y-0">Kitchen(4,0)</div>
-    <BSRow style="margin-top: 100px">
-      <BSCol>
-        <div draggable='@IsThisMyPiece("blue")' class="piece" id="blue" ondragover="event.preventDefault();"
-          ondragstart="event.dataTransfer.setData('blue', event.target.id);"></div>
-      </BSCol>
+    <div>
+      <div class="room x-2 y-2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x-1 y-2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x0 y-2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x1 y-2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+      <div class="room x2 y-2">
+        <BSRow Justify="Justify.Start">
+          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+          {
+            <div class="piece" id="@player.Character"></div>
+          }
+        </BSRow>
+      </div>
+    </div>
 
 
-      <BSCol>
-        <div draggable=false class="piece" id="red" ondragover="event.preventDefault();"
-          ondragstart="event.dataTransfer.setData('red', event.target.id);"></div>
-      </BSCol>
-
-    </BSRow>
 
   </div>
   <div class="col">
@@ -82,7 +252,57 @@
           <BSAccordionItem>
             <Header><strong>Guess Sheet</strong></Header>
             <Content>
-              [Guess Sheet Component]
+              <BSRow Justify="Justify.Center">
+                <div><strong>Suspects</strong></div>
+
+                @foreach (var (suspect, guesses) in Sheet.Suspects)
+                {
+                  <BSRow Justify="Justify.Center">
+                    <BSCol>@suspect</BSCol>
+                    @foreach (var bi in Enumerable.Range(0, guesses.Count))
+                    {
+                      <BSCol>
+                        <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Suspects[suspect][bi]"></BSInputCheckbox>
+                      </BSCol>
+                    }
+                  </BSRow>
+                }
+              </BSRow>
+
+              <BSRow Justify="Justify.Center">
+                <div><strong>Rooms</strong></div>
+
+                @foreach (var (room, guesses) in Sheet.Rooms)
+                {
+                  <BSRow Justify="Justify.Center">
+                    <BSCol>@room</BSCol>
+                    @foreach (var bi in Enumerable.Range(0, guesses.Count))
+                    {
+                      <BSCol>
+                        <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Rooms[room][bi]"></BSInputCheckbox>
+                      </BSCol>
+                    }
+                  </BSRow>
+                }
+              </BSRow>
+
+              <BSRow Justify="Justify.Center">
+                <div><strong>Weapons</strong></div>
+
+                @foreach (var (weapons, guesses) in Sheet.Weapons)
+                {
+                  <BSRow Justify="Justify.Center">
+                    <BSCol>@weapons</BSCol>
+                    @foreach (var bi in Enumerable.Range(0, guesses.Count))
+                    {
+                      <BSCol>
+                        <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Weapons[weapons][bi]"></BSInputCheckbox>
+                      </BSCol>
+                    }
+                  </BSRow>
+                }
+              </BSRow>
+
             </Content>
           </BSAccordionItem>
 
