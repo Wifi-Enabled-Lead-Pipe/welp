@@ -29,6 +29,7 @@ public class ServerLogicService : IServerLogicService
             && gameState.ActionRegister.Values.Last().Player == player
         )
         {
+            currentOptions.Movement = new List<ActionOption<Movement>>(); // set to empty list
             if (gameState.ActionRegister.Values.Last().ActionType == ActionType.MoveRoom)
             {
                 // the player just moved into a room during their turn, now they can make a suggestion or accusation (or end turn)
@@ -52,11 +53,20 @@ public class ServerLogicService : IServerLogicService
         }
         else
         {
-            // it is the beginning of the player's turn
-            currentOptions.Suggestion = new ActionOption<Suggestion>()
+            // it is the beginning of the player's turn & they are in a room
+            if (
+                gameState.GameBoard.GameRooms
+                    .Select(r => r.Position)
+                    .ToList()
+                    .Contains(player.Position)
+            )
             {
-                ActionType = ActionType.Suggestion
-            };
+                currentOptions.Suggestion = new ActionOption<Suggestion>()
+                {
+                    ActionType = ActionType.Suggestion
+                };
+            }
+
             currentOptions.Accusation = new ActionOption<Accusation>()
             {
                 ActionType = ActionType.Accusation

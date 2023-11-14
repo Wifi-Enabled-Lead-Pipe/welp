@@ -102,7 +102,7 @@
             </div>
             <div class="room x-1 y0">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, 0)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -110,7 +110,7 @@
             </div>
             <div class="room x0 y0">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, 0)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -118,7 +118,7 @@
             </div>
             <div class="room x1 y0">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, 0)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -126,7 +126,7 @@
             </div>
             <div class="room x2 y0">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, 0)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -145,7 +145,7 @@
             </div>
             <div class="room x-1 y-1">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, -1)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -153,7 +153,7 @@
             </div>
             <div class="room x0 y-1">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, -1)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -161,7 +161,7 @@
             </div>
             <div class="room x1 y-1">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, -1)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -169,7 +169,7 @@
             </div>
             <div class="room x2 y-1">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, -1)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -188,7 +188,7 @@
             </div>
             <div class="room x-1 y-2">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, -2)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -196,7 +196,7 @@
             </div>
             <div class="room x0 y-2">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, -2)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -204,7 +204,7 @@
             </div>
             <div class="room x1 y-2">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, -2)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -212,7 +212,7 @@
             </div>
             <div class="room x2 y-2">
                 <BSRow Justify="Justify.Center">
-                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, -2)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
                     }
@@ -271,21 +271,63 @@
                                     <p class="lead">
                                         Please select an action.
                                     </p>
-                                        <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = CurrentOptions.Suggestion.ActionType, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" IsOutlined="true">
+                                    @if(CurrentOptions.Suggestion != null)
+                                    {
+                                        var actionRecord = new ServerData.ActionRecord() { ActionType = CurrentOptions.Accusation.ActionType, ActionDetails = new Dictionary<string, string>(), Player = State.CurrentPlayer }; ;
+
+                                        <BSInputRadio CheckedValue="@actionRecord" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
                                             Suggestion
                                         </BSInputRadio>
-                                    <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = CurrentOptions.Accusation.ActionType, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" IsOutlined="true">
+                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails["suspect"]">
+                                            @foreach (var (suspect, guesses) in Sheet.Suspects)
+                                            {
+                                                <option>@suspect</option>
+                                            }
+                                        </BSInput>
+                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails["weapon"]">
+                                            @foreach (var (weapon, guesses) in Sheet.Weapons)
+                                            {
+                                                <option>@weapon</option>
+                                            }
+                                        </BSInput>
+                                    }
+                                    @if(CurrentOptions.Accusation != null)
+                                    {
+                                        var actionRecord = new ServerData.ActionRecord() { ActionType = CurrentOptions.Accusation.ActionType, ActionDetails = new Dictionary<string, string>(), Player = State.CurrentPlayer }; ;
+                                        <BSInputRadio CheckedValue="@actionRecord" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
                                             Accusation
                                         </BSInputRadio>
-                                    @foreach(var movement in CurrentOptions.Movement)
-                                    {
-                                        <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = movement.ActionType, ActionDetails = new Dictionary<string, string>{{"Position", $"{movement.Details.NewPosition.x},{movement.Details.NewPosition.y}"}}, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" IsOutlined="true">
-                                        </BSInputRadio>
+                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails" >
+                                            @foreach (var (suspect, guesses) in Sheet.Suspects)
+                                            {
+                                                <option>@suspect</option>
+                                            }
+                                        </BSInput>
+                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails">
+                                            @foreach (var (weapon, guesses) in Sheet.Weapons)
+                                            {
+                                                <option>@weapon</option>
+                                            }
+                                        </BSInput>
+                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails">
+                                            @foreach (var (room, guesses) in Sheet.Rooms)
+                                            {
+                                                <option>@room</option>
+                                            }
+                                        </BSInput>
                                     }
-                                    <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = CurrentOptions.EndTurn.ActionType, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" IsOutlined="true">
+                                    @if(CurrentOptions.Movement != null)
+                                    {
+                                        @foreach (var movement in CurrentOptions.Movement)
+                                        {
+                                            <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = movement.ActionType, ActionDetails = new Dictionary<string, string>{{"Position", $"{movement.Details.NewPosition.x},{movement.Details.NewPosition.y}"}}, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
+                                                Move to new position: @movement.Details.NewPosition
+                                            </BSInputRadio>
+                                        }
+                                    }
+                                    <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = CurrentOptions.EndTurn.ActionType, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
                                         EndTurn
                                     </BSInputRadio>
-
                                     <button @onclick="SubmitPlayerAction" type="button" class="btn massive-button"
                                             style="width: 300px">
                                         Send

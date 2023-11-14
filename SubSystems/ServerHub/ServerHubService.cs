@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Welp.Hubs;
+using Welp.Pages;
 using Welp.ServerData;
 using Welp.ServerHub.Models;
 using Welp.ServerLogic;
@@ -69,20 +70,27 @@ public class ServerHubService : IServerHubService
 
     public async Task<ActionOptions> GetActionOptions()
     {
-        Game game = serverDataService.GetGameState();
+        var game = serverDataService.GetGameState();
         var actionOptions = await serverDataService.GetActionOptions(game, game.CurrentPlayer);
         return actionOptions;
     }
 
     public async Task<PlayerActionResponse> SubmitPlayerAction(PlayerActionRequest request)
     {
-        var output = serverDataService.UpdateGame(serverDataService.GetGameState(), request.Action);
+        var newGameState = serverDataService.UpdateGame(
+            serverDataService.GetGameState(),
+            request.Action
+        );
 
         await BroadcastMessage(
             new BroadcastRequest()
             {
                 Message = $"Player: {request.IdOrUserName} took action {request.Action}."
             }
+        );
+        await gameHub.Clients.All.SendAsync(
+            "GameUpdated",
+            JsonConvert.SerializeObject(newGameState)
         );
         return await Task.FromResult(new PlayerActionResponse() { Status = "valid" });
     }

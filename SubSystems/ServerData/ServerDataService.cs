@@ -35,13 +35,26 @@ public class ServerDataService : IServerDataService
     public Game UpdateGame(Game game, ActionRecord action)
     {
         game.ActionRegister.Add(game.ActionRegister.Count, action);
+        if (action.ActionType == ActionType.MoveRoom || action.ActionType == ActionType.MoveHallway)
+        {
+            (int x, int y) newPosition = (
+                int.Parse(action.ActionDetails["Position"].Split(",").First()),
+                int.Parse(action.ActionDetails["Position"].Split(",").Last())
+            );
+            game.Players
+                .Where(p => p.User.ConnectionId == action.Player.User.ConnectionId)
+                .FirstOrDefault()
+                .Position = newPosition;
+        }
         State = game.Clone();
         if (action.ActionType == ActionType.EndTurn)
         {
-            State.CurrentPlayer = game.Players[
-                (game.Players.IndexOf(game.CurrentPlayer) + 1) % game.Players.Count
-            ];
+            int idx = game.Players.FindIndex(
+                p => p.User.ConnectionId == game.CurrentPlayer.User.ConnectionId
+            );
+            State.CurrentPlayer = game.Players[(idx + 1) % game.Players.Count];
         }
+
         return State.Clone();
     }
 
