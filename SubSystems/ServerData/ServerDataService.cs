@@ -28,13 +28,33 @@ public class ServerDataService : IServerDataService
         State = new Game();
         State.Players = AssignPlayers(users);
         State.GameBoard = InitializeGameBoard(State.Players);
+        State.CurrentPlayer = State.Players[0];
         return State.Clone();
     }
 
     public Game UpdateGame(Game game, ActionRecord action)
     {
         game.ActionRegister.Add(game.ActionRegister.Count, action);
+        if (action.ActionType == ActionType.MoveRoom || action.ActionType == ActionType.MoveHallway)
+        {
+            (int x, int y) newPosition = (
+                int.Parse(action.ActionDetails["Position"].Split(",").First()),
+                int.Parse(action.ActionDetails["Position"].Split(",").Last())
+            );
+            game.Players
+                .Where(p => p.User.ConnectionId == action.Player.User.ConnectionId)
+                .FirstOrDefault()
+                .Position = newPosition;
+        }
         State = game.Clone();
+        if (action.ActionType == ActionType.EndTurn)
+        {
+            int idx = game.Players.FindIndex(
+                p => p.User.ConnectionId == game.CurrentPlayer.User.ConnectionId
+            );
+            State.CurrentPlayer = game.Players[(idx + 1) % game.Players.Count];
+        }
+
         return State.Clone();
     }
 
@@ -53,6 +73,11 @@ public class ServerDataService : IServerDataService
             );
         }
         return players;
+    }
+
+    public Task<ActionOptions> GetActionOptions(Game game, Player player)
+    {
+        return serverLogicService.GenerateActionOptions(game, player);
     }
 
     public GameBoard InitializeGameBoard(List<Player> players)

@@ -7,7 +7,8 @@ public interface IServerHubService
 {
     Task<BroadcastResponse> BroadcastMessage(BroadcastRequest request);
     Task<PrivateMessageResponse> SendPrivateMessage(PrivateMessageRequest request);
-
+    Task<PlayerActionResponse> SubmitPlayerAction(PlayerActionRequest request);
+    Task<ActionOptions> GetActionOptions();
     Task<PlayerActionResponse> ValidatePlayerAction(PlayerActionRequest request);
     Task StartGame();
     Task RestartGame();

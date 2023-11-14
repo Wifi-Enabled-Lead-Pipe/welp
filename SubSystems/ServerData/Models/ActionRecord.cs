@@ -7,7 +7,8 @@ namespace Welp.ServerData
     public class ActionRecord
     {
         public ActionType ActionType { get; set; }
-        public Dictionary<string, string> ActionDetails { get; set; }
+        public Dictionary<string, string> ActionDetails { get; set; } =
+            new Dictionary<string, string>();
         public Player Player { get; set; }
     }
 
@@ -16,7 +17,8 @@ namespace Welp.ServerData
         MoveRoom = 0,
         MoveHallway = 1,
         Suggestion = 2,
-        Accusation = 3
+        Accusation = 3,
+        EndTurn = 4
     }
 
     public class Movement

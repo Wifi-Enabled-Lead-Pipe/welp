@@ -1,238 +1,241 @@
 @page "/game"
-
+@using Welp.ServerData;
 
 <PageTitle>Welp-Admin</PageTitle>
 <div class="row">
-  <div class="col">
-    <img class="game-board" src="images/game-board-2.png" alt="..." />
-    <div>
-      <div class="room x-2 y2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x-1 y2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-1, 2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x0 y2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (0, 2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x1 y2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (1, 2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x2 y2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (2, 2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-    </div>
-
-    <div>
-      <div class="room x-2 y1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x-1 y1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-1, 1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x0 y1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (0, 1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x1 y1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (1, 1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x2 y1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (2, 1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-    </div>
-
-    <div>
-      <div class="room x-2 y0">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x-1 y0">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x0 y0">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x1 y0">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x2 y0">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-    </div>
-
-    <div>
-      <div class="room x-2 y-1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x-1 y-1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x0 y-1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x1 y-1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x2 y-1">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-    </div>
-
-    <div>
-      <div class="room x-2 y-2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x-1 y-2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x0 y-2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x1 y-2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-      <div class="room x2 y-2">
-        <BSRow Justify="Justify.Start">
-          @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
-          {
-            <div class="piece" id="@("character-"+player.Character.ToString())"></div>
-          }
-        </BSRow>
-      </div>
-    </div>
-
-  </div>
-  <div class="col">
-    <BSRow>
-      <BSCol>
-        <BSAccordion class="pt-5 pe-5">
-          @if (IAmScarlett)
-          {
-            <BSAccordionItem>
-              <Header><strong>
-                  Host Actions
-                </strong></Header>
-              <Content>
+    <div class="col">
+        <img class="game-board" src="images/game-board-2.png" alt="..." />
+        <div>
+            <div class="room x-2 y2">
                 <BSRow Justify="Justify.Center">
+
+                    @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x-1 y2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, 2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x0 y2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, 2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x1 y2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, 2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x2 y2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, 2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+        </div>
+
+        <div>
+            <div class="room x-2 y1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x-1 y1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, 1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x0 y1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, 1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x1 y1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, 1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x2 y1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, 1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+        </div>
+
+        <div>
+            <div class="room x-2 y0">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x-1 y0">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, 0)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x0 y0">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, 0)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x1 y0">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, 0)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x2 y0">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, 0)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+        </div>
+
+        <div>
+            <div class="room x-2 y-1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x-1 y-1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, -1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x0 y-1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, -1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x1 y-1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, -1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x2 y-1">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, -1)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+        </div>
+
+        <div>
+            <div class="room x-2 y-2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x-1 y-2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (-1, -2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x0 y-2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (0, -2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x1 y-2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (1, -2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+            <div class="room x2 y-2">
+                <BSRow Justify="Justify.Center">
+                    @foreach (var player in State.Players.Where(p => p.Position == (2, -2)))
+                    {
+                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    }
+                </BSRow>
+            </div>
+        </div>
+
+    </div>
+    <div class="col">
+        <BSRow>
+            <BSCol>
+                <BSAccordion class="pt-5 pe-5">
+                    @if (IAmScarlett)
+                    {
+                        <BSAccordionItem>
+                            <Header>
+                                <strong>
+                                    Host Actions
+                                </strong>
+                            </Header>
+                            <Content>
+                                <BSRow Justify="Justify.Center">
                   <p class="lead">
                     You are the host, would you like to start/reset the game?
                   </p>
@@ -248,91 +251,114 @@
                   <button @onclick="TerminateGame" type="button" class="btn btn-warning massive-button ms-2"
                     style="width: 300px">Terminate
                   </button>
-                </BSRow>
-              </Content>
-            </BSAccordionItem>
-          }
-          <BSAccordionItem>
-            <Header><strong>
-                Player Actions
-              </strong></Header>
-            <Content>
-              <BSRow Justify="Justify.Center">
-                <p class="lead">
-                  The application logic isn't in place.
-                </p>
-                <p class="mb-0">
-                  However, this action follows the complete player action submission, validation, and communication loop
-                  outlined at a high level in the appendix of the updated SRS.
-                </p>
-                <button @onclick="SendInvalidOperation" type="button" class="btn btn-warning massive-button"
-                  style="width: 300px">Send
-                  Invalid Operation</button>
-                <button @onclick="SendValidOperation" type="button" class="btn btn-success massive-button ms-2"
-                  style="width: 300px">Send
-                  Valid Operation</button>
-              </BSRow>
-            </Content>
-          </BSAccordionItem>
-          <BSAccordionItem>
-            <Header><strong>Guess Sheet</strong></Header>
-            <Content>
-              <BSRow Justify="Justify.Center">
-                <div><strong>Suspects</strong></div>
-
-                @foreach (var (suspect, guesses) in Sheet.Suspects)
-                {
-                  <BSRow Justify="Justify.Center">
-                    <BSCol>@suspect</BSCol>
-                    @foreach (var bi in Enumerable.Range(0, guesses.Count))
-                    {
-                      <BSCol>
-                        <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Suspects[suspect][bi]"></BSInputCheckbox>
-                      </BSCol>
+                                </BSRow>
+                            </Content>
+                        </BSAccordionItem>
                     }
-                  </BSRow>
-                }
-              </BSRow>
+                    <BSAccordionItem DefaultShown="IsPlayerTurn">
+                        <Header>
+                            <strong>
+                                Player Actions
+                            </strong>
+                        </Header>
+                        <Content>
+                            @if (!IsPlayerTurn || CurrentOptions.EndTurn == null)
+                            {
+                                <BSRow Justify="Justify.Center">
+                                    <p class="lead">
+                                        Please wait for your turn.
+                                    </p>
+                                </BSRow>
+                            }
+                            else
+                            {
+                                <BSRow Justify="Justify.Center">
+                                    <p class="lead">
+                                        Please select an action.
+                                    </p>
+                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
+                                        @bind-Value="ActionString" />
 
-              <BSRow Justify="Justify.Center">
-                <div><strong>Rooms</strong></div>
+                                    <button @onclick="SubmitPlayerAction" type="button"
+                                        class="btn btn-primary massive-button" style="width: 300px">
+                                        Send Selected Action
+                                    </button>
 
-                @foreach (var (room, guesses) in Sheet.Rooms)
-                {
-                  <BSRow Justify="Justify.Center">
-                    <BSCol>@room</BSCol>
-                    @foreach (var bi in Enumerable.Range(0, guesses.Count))
-                    {
-                      <BSCol>
-                        <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Rooms[room][bi]"></BSInputCheckbox>
-                      </BSCol>
-                    }
-                  </BSRow>
-                }
-              </BSRow>
+                                </BSRow>
+                                <BSRow Justify="Justify.Center">
+                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
+                                        @bind-Value="EndTurnString" />
 
-              <BSRow Justify="Justify.Center">
-                <div><strong>Weapons</strong></div>
+                                    <button @onclick="SubmitEndTurnAction" type="button"
+                                        class="btn btn-warning massive-button" style="width: 300px">
+                                        End Turn
+                                    </button>
+                                </BSRow>
+                            }
+                        </Content>
+                    </BSAccordionItem>
+                    <BSAccordionItem>
+                        <Header><strong>Guess Sheet</strong></Header>
+                        <Content>
+                            <BSRow Justify="Justify.Center">
+                                <div><strong>Suspects</strong></div>
 
-                @foreach (var (weapons, guesses) in Sheet.Weapons)
-                {
-                  <BSRow Justify="Justify.Center">
-                    <BSCol>@weapons</BSCol>
-                    @foreach (var bi in Enumerable.Range(0, guesses.Count))
-                    {
-                      <BSCol>
-                        <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Weapons[weapons][bi]"></BSInputCheckbox>
-                      </BSCol>
-                    }
-                  </BSRow>
-                }
-              </BSRow>
+                                @foreach (var (suspect, guesses) in Sheet.Suspects)
+                                {
+                                    <BSRow Justify="Justify.Center">
+                                        <BSCol>@suspect</BSCol>
+                                        @foreach (var bi in Enumerable.Range(0, guesses.Count))
+                                        {
+                                            <BSCol>
+                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Suspects[suspect][bi]">
+                                                </BSInputCheckbox>
+                                            </BSCol>
+                                        }
+                                    </BSRow>
+                                }
+                            </BSRow>
 
-            </Content>
-          </BSAccordionItem>
+                            <BSRow Justify="Justify.Center">
+                                <div><strong>Rooms</strong></div>
 
-        </BSAccordion>
-      </BSCol>
-    </BSRow>
-  </div>
+                                @foreach (var (room, guesses) in Sheet.Rooms)
+                                {
+                                    <BSRow Justify="Justify.Center">
+                                        <BSCol>@room</BSCol>
+                                        @foreach (var bi in Enumerable.Range(0, guesses.Count))
+                                        {
+                                            <BSCol>
+                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Rooms[room][bi]">
+                                                </BSInputCheckbox>
+                                            </BSCol>
+                                        }
+                                    </BSRow>
+                                }
+                            </BSRow>
+
+                            <BSRow Justify="Justify.Center">
+                                <div><strong>Weapons</strong></div>
+
+                                @foreach (var (weapons, guesses) in Sheet.Weapons)
+                                {
+                                    <BSRow Justify="Justify.Center">
+                                        <BSCol>@weapons</BSCol>
+                                        @foreach (var bi in Enumerable.Range(0, guesses.Count))
+                                        {
+                                            <BSCol>
+                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Weapons[weapons][bi]">
+                                                </BSInputCheckbox>
+                                            </BSCol>
+                                        }
+                                    </BSRow>
+                                }
+                            </BSRow>
+
+                        </Content>
+                    </BSAccordionItem>
+
+                </BSAccordion>
+            </BSCol>
+        </BSRow>
+    </div>
 </div>

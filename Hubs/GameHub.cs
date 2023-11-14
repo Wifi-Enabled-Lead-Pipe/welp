@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.SignalR;
-using Welp.Pages;
-using Welp.ServerHub.Models;
 
 namespace Welp.Hubs;
 
@@ -17,17 +15,17 @@ public class GameHub : Hub
     {
         string username = Context.GetHttpContext().Request.Query["username"];
         var existingConnection = connectionService.Connections.FirstOrDefault(
-            kv => kv.Value.ToLower() == username.ToLower()
+            kv => kv.Key.ToLower() == username.ToLower()
         );
 
-        if (existingConnection.Key is not null)
+        if (existingConnection.Key is not null && existingConnection.Key != string.Empty)
         {
             connectionService.Connections.Remove(existingConnection.Key);
         }
 
         connectionService.Connections.Add(
-            Context.ConnectionId,
-            username == string.Empty || username is null ? "anonymous" : username
+            username == string.Empty || username is null ? "anonymous" : username,
+            Context.ConnectionId
         );
         return base.OnConnectedAsync();
     }

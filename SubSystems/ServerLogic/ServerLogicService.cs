@@ -21,12 +21,15 @@ public class ServerLogicService : IServerLogicService
         );
     }
 
-    public ActionOptions GenerateActionOptions(Game gameState, Player player)
+    public async Task<ActionOptions> GenerateActionOptions(Game gameState, Player player)
     {
         ActionOptions currentOptions = new ActionOptions();
-
-        if (gameState.ActionRegister.Values.Last().Player == player)
+        if (
+            gameState.ActionRegister.Count > 0
+            && gameState.ActionRegister.Values.Last().Player == player
+        )
         {
+            currentOptions.Movement = new List<ActionOption<Movement>>(); // set to empty list
             if (gameState.ActionRegister.Values.Last().ActionType == ActionType.MoveRoom)
             {
                 // the player just moved into a room during their turn, now they can make a suggestion or accusation (or end turn)
@@ -50,22 +53,35 @@ public class ServerLogicService : IServerLogicService
         }
         else
         {
-            // it is the beginning of the player's turn
-            currentOptions.Suggestion = new ActionOption<Suggestion>()
+            // it is the beginning of the player's turn & they are in a room
+            if (
+                gameState.GameBoard.GameRooms
+                    .Select(r => r.Position)
+                    .ToList()
+                    .Contains(player.Position)
+            )
             {
-                ActionType = ActionType.Suggestion
-            };
+                currentOptions.Suggestion = new ActionOption<Suggestion>()
+                {
+                    ActionType = ActionType.Suggestion
+                };
+            }
+
             currentOptions.Accusation = new ActionOption<Accusation>()
             {
                 ActionType = ActionType.Accusation
             };
-            currentOptions.Movement = GenerateMovementOptions(gameState, player);
+            currentOptions.Movement = await GenerateMovementOptions(gameState, player);
         }
+        currentOptions.EndTurn = new ActionOption<bool>() { ActionType = ActionType.EndTurn };
 
-        return currentOptions;
+        return await Task.FromResult(currentOptions);
     }
 
-    public List<ActionOption<Movement>> GenerateMovementOptions(Game gameState, Player player)
+    public async Task<List<ActionOption<Movement>>> GenerateMovementOptions(
+        Game gameState,
+        Player player
+    )
     {
         List<ActionOption<Movement>> movementOptions = new List<ActionOption<Movement>>();
 
@@ -142,6 +158,6 @@ public class ServerLogicService : IServerLogicService
             }
         }
 
-        return movementOptions;
+        return await Task.FromResult(movementOptions);
     }
 }
