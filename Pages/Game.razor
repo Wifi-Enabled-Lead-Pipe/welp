@@ -1,5 +1,5 @@
 @page "/game"
-
+@using Welp.ServerData;
 
 <PageTitle>Welp-Admin</PageTitle>
 <div class="row">
@@ -239,18 +239,18 @@
                                         You are the host, would you like to start/reset the game?
                                     </p>
                                     <button @onclick="RestartGame" type="button" class="btn btn-success massive-button"
-                                            style="width: 300px">
+                                        style="width: 300px">
                                         Start
                                     </button>
                                     <button @onclick="RestartGame" type="button" class="btn btn-warning massive-button ms-2"
-                                            style="width: 300px">
+                                        style="width: 300px">
                                         Restart
                                     </button>
                                 </BSRow>
                             </Content>
                         </BSAccordionItem>
                     }
-                    <BSAccordionItem DefaultShown=IsPlayerTurn OnShow=GetActionOptions>
+                    <BSAccordionItem DefaultShown="IsPlayerTurn">
                         <Header>
                             <strong>
                                 Player Actions
@@ -271,67 +271,22 @@
                                     <p class="lead">
                                         Please select an action.
                                     </p>
-                                    @if(CurrentOptions.Suggestion != null)
-                                    {
-                                        var actionRecord = new ServerData.ActionRecord() { ActionType = CurrentOptions.Accusation.ActionType, ActionDetails = new Dictionary<string, string>(), Player = State.CurrentPlayer }; ;
+                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
+                                        @bind-Value="ActionString" />
 
-                                        <BSInputRadio CheckedValue="@actionRecord" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
-                                            Suggestion
-                                        </BSInputRadio>
-                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails["suspect"]">
-                                            @foreach (var (suspect, guesses) in Sheet.Suspects)
-                                            {
-                                                <option>@suspect</option>
-                                            }
-                                        </BSInput>
-                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails["weapon"]">
-                                            @foreach (var (weapon, guesses) in Sheet.Weapons)
-                                            {
-                                                <option>@weapon</option>
-                                            }
-                                        </BSInput>
-                                    }
-                                    @if(CurrentOptions.Accusation != null)
-                                    {
-                                        var actionRecord = new ServerData.ActionRecord() { ActionType = CurrentOptions.Accusation.ActionType, ActionDetails = new Dictionary<string, string>(), Player = State.CurrentPlayer }; ;
-                                        <BSInputRadio CheckedValue="@actionRecord" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
-                                            Accusation
-                                        </BSInputRadio>
-                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails" >
-                                            @foreach (var (suspect, guesses) in Sheet.Suspects)
-                                            {
-                                                <option>@suspect</option>
-                                            }
-                                        </BSInput>
-                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails">
-                                            @foreach (var (weapon, guesses) in Sheet.Weapons)
-                                            {
-                                                <option>@weapon</option>
-                                            }
-                                        </BSInput>
-                                        <BSInput InputType="BlazorStrap.InputType.Select" @bind-Value="@actionRecord.ActionDetails">
-                                            @foreach (var (room, guesses) in Sheet.Rooms)
-                                            {
-                                                <option>@room</option>
-                                            }
-                                        </BSInput>
-                                    }
-                                    @if(CurrentOptions.Movement != null)
-                                    {
-                                        @foreach (var movement in CurrentOptions.Movement)
-                                        {
-                                            <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = movement.ActionType, ActionDetails = new Dictionary<string, string>{{"Position", $"{movement.Details.NewPosition.x},{movement.Details.NewPosition.y}"}}, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
-                                                Move to new position: @movement.Details.NewPosition
-                                            </BSInputRadio>
-                                        }
-                                    }
-                                    <BSInputRadio CheckedValue="@(new ServerData.ActionRecord(){ ActionType = CurrentOptions.EndTurn.ActionType, Player = State.CurrentPlayer})" @bind-Value="ActionRecord" IsToggle="true" Color="BlazorStrap.BSColor.Primary" IsOutlined="true">
-                                        EndTurn
-                                    </BSInputRadio>
-                                    <button @onclick="SubmitPlayerAction" type="button" class="btn massive-button"
-                                            style="width: 300px">
-                                        Send
-                                        Selected Action
+                                    <button @onclick="SubmitPlayerAction" type="button"
+                                        class="btn btn-primary massive-button" style="width: 300px">
+                                        Send Selected Action
+                                    </button>
+
+                                </BSRow>
+                                <BSRow Justify="Justify.Center">
+                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
+                                        @bind-Value="EndTurnString" />
+
+                                    <button @onclick="SubmitEndTurnAction" type="button"
+                                        class="btn btn-warning massive-button" style="width: 300px">
+                                        End Turn
                                     </button>
                                 </BSRow>
                             }
@@ -350,7 +305,8 @@
                                         @foreach (var bi in Enumerable.Range(0, guesses.Count))
                                         {
                                             <BSCol>
-                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Suspects[suspect][bi]"></BSInputCheckbox>
+                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Suspects[suspect][bi]">
+                                                </BSInputCheckbox>
                                             </BSCol>
                                         }
                                     </BSRow>
@@ -367,7 +323,8 @@
                                         @foreach (var bi in Enumerable.Range(0, guesses.Count))
                                         {
                                             <BSCol>
-                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Rooms[room][bi]"></BSInputCheckbox>
+                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Rooms[room][bi]">
+                                                </BSInputCheckbox>
                                             </BSCol>
                                         }
                                     </BSRow>
@@ -384,7 +341,8 @@
                                         @foreach (var bi in Enumerable.Range(0, guesses.Count))
                                         {
                                             <BSCol>
-                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Weapons[weapons][bi]"></BSInputCheckbox>
+                                                <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Weapons[weapons][bi]">
+                                                </BSInputCheckbox>
                                             </BSCol>
                                         }
                                     </BSRow>

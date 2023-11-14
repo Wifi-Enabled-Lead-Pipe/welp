@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
+using System.Data;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
 using Welp.ServerData;
@@ -27,18 +28,14 @@ public partial class Game
             == Character.MissScarlet;
 
     public bool IsPlayerTurn => State.CurrentPlayer.User.ConnectionId == ConnectionId;
+    public string ActionString { get; set; } = string.Empty;
+    public string EndTurnString { get; set; } = string.Empty;
 
     [Inject]
     private NavigationManager? navigationManager { get; set; }
 
     [Inject]
     private IServerHubService? serverHubService { get; set; }
-
-    // [Inject]
-    // private IServerDataService? serverDataService {get; set;}
-
-    // [Inject]
-    // private IServerLogicService? serverLogicService {get; set;}
 
     public List<string> privateMessages = new List<string>();
     public List<string> broadcastMessages = new List<string>();
@@ -88,13 +85,16 @@ public partial class Game
 
         hubConnection.On<string>(
             "GameUpdated",
-            (message) =>
+            async (message) =>
             {
                 Console.WriteLine("Game Updated!");
-                Console.WriteLine(message);
                 State =
                     JsonConvert.DeserializeObject<ServerData.Game>(message)
                     ?? throw new Exception("Unable to Deserialize Game");
+
+                CurrentOptions = await serverHubService.GetActionOptions();
+                ActionString = JsonConvert.SerializeObject(CurrentOptions.Movement.First());
+                EndTurnString = JsonConvert.SerializeObject(CurrentOptions.EndTurn);
                 StateHasChanged();
             }
         );
@@ -147,18 +147,47 @@ public partial class Game
         );
     }
 
-    public async Task GetActionOptions()
-    {
-        CurrentOptions = await serverHubService.GetActionOptions();
-    }
-
     public async Task SubmitPlayerAction()
     {
+        var action = JsonConvert.DeserializeObject<ActionOption<Movement>>(ActionString);
+        var currentPlayer = State.Players.First(p => p.User.ConnectionId == ConnectionId);
         await serverHubService.SubmitPlayerAction(
             new PlayerActionRequest()
             {
                 IdOrUserName = IdOrUserName,
-                Action = ActionRecord,
+                Action = new ActionRecord()
+                {
+                    ActionType = action.ActionType,
+                    ActionDetails = new Dictionary<string, string>()
+                    {
+                        {
+                            "Position",
+                            action.Details.NewPosition.x.ToString()
+                                + ","
+                                + action.Details.NewPosition.y.ToString()
+                        },
+                    },
+                    Player = currentPlayer
+                },
+                ValidAction = true
+            }
+        );
+    }
+
+    public async Task SubmitEndTurnAction()
+    {
+        var action = JsonConvert.DeserializeObject<ActionOption<bool>>(EndTurnString);
+        var currentPlayer = State.Players.First(p => p.User.ConnectionId == ConnectionId);
+        await serverHubService.SubmitPlayerAction(
+            new PlayerActionRequest()
+            {
+                IdOrUserName = IdOrUserName,
+                Action = new ActionRecord()
+                {
+                    ActionType = action.ActionType,
+                    ActionDetails = new Dictionary<string, string>() { },
+                    Player = currentPlayer
+                },
                 ValidAction = true
             }
         );

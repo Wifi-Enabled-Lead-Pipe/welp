@@ -82,12 +82,12 @@ public class ServerHubService : IServerHubService
             request.Action
         );
 
-        await BroadcastMessage(
-            new BroadcastRequest()
-            {
-                Message = $"Player: {request.IdOrUserName} took action {request.Action}."
-            }
-        );
+        // await BroadcastMessage(
+        //     new BroadcastRequest()
+        //     {
+        //         Message = $"Player: {request.IdOrUserName} took action {request.Action}."
+        //     }
+        // );
         await gameHub.Clients.All.SendAsync(
             "GameUpdated",
             JsonConvert.SerializeObject(newGameState)
