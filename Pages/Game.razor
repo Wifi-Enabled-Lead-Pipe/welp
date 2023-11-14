@@ -8,6 +8,7 @@
         <div>
             <div class="room x-2 y2">
                 <BSRow Justify="Justify.Center">
+
                     @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
                     {
                         <div class="piece" id="@("character-"+player.Character.ToString())"></div>
@@ -235,17 +236,21 @@
                             </Header>
                             <Content>
                                 <BSRow Justify="Justify.Center">
-                                    <p class="lead">
-                                        You are the host, would you like to start/reset the game?
-                                    </p>
-                                    <button @onclick="RestartGame" type="button" class="btn btn-success massive-button"
-                                        style="width: 300px">
-                                        Start
-                                    </button>
-                                    <button @onclick="RestartGame" type="button" class="btn btn-warning massive-button ms-2"
-                                        style="width: 300px">
-                                        Restart
-                                    </button>
+                  <p class="lead">
+                    You are the host, would you like to start/reset the game?
+                  </p>
+                  @if(State.Players.Count == 0 ){
+                    <button @onclick="RestartGame" type="button" class="btn btn-success massive-button"
+                    style="width: 300px">Start
+                  </button>
+                  }
+                  
+                  <button @onclick="RestartGame" type="button" class="btn btn-warning massive-button ms-2"
+                    style="width: 300px">Restart
+                  </button>
+                  <button @onclick="TerminateGame" type="button" class="btn btn-danger massive-button ms-2"
+                    style="width: 300px">Terminate
+                  </button>
                                 </BSRow>
                             </Content>
                         </BSAccordionItem>

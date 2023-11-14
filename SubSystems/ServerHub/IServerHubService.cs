@@ -10,5 +10,7 @@ public interface IServerHubService
     Task<PlayerActionResponse> SubmitPlayerAction(PlayerActionRequest request);
     Task<ActionOptions> GetActionOptions();
     Task<PlayerActionResponse> ValidatePlayerAction(PlayerActionRequest request);
+    Task StartGame();
     Task RestartGame();
+    Task TerminateGame();
 }
