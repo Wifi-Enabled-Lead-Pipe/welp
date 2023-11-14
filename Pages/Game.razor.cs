@@ -85,7 +85,7 @@ public partial class Game
             (message) =>
             {
                 Console.WriteLine("Game Updated!");
-                Console.WriteLine(message);
+
                 State =
                     JsonConvert.DeserializeObject<ServerData.Game>(message)
                     ?? throw new Exception("Unable to Deserialize Game");
@@ -110,6 +110,14 @@ public partial class Game
                 var encodedMsg = $"ServerToSpecificClient: {message}";
                 privateMessages.Add(encodedMsg);
                 StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
+            "GameTerminated",
+            (message) =>
+            {
+                navigationManager.NavigateTo("");
             }
         );
 
@@ -144,6 +152,11 @@ public partial class Game
     public async Task RestartGame()
     {
         await serverHubService.RestartGame();
+    }
+
+    public async Task TerminateGame()
+    {
+        await serverHubService.TerminateGame();
     }
 }
 

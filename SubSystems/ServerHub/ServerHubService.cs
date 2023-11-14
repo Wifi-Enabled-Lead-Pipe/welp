@@ -97,9 +97,22 @@ public class ServerHubService : IServerHubService
         return await Task.FromResult(response);
     }
 
+    // same players
     public async Task RestartGame()
     {
         var game = serverDataService.InitializeNewGame(connectionService.UserConnections);
         await gameHub.Clients.All.SendAsync("GameUpdated", JsonConvert.SerializeObject(game));
+    }
+
+    public async Task StartGame()
+    {
+        var game = serverDataService.InitializeNewGame(connectionService.UserConnections);
+        await gameHub.Clients.All.SendAsync("GameUpdated", JsonConvert.SerializeObject(game));
+    }
+
+    public async Task TerminateGame()
+    {
+        connectionService.Connections.Clear();
+        await gameHub.Clients.All.SendAsync("GameTerminated", "Get Out!");
     }
 }

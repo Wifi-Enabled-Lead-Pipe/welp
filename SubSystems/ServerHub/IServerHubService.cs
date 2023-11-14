@@ -9,5 +9,7 @@ public interface IServerHubService
     Task<PrivateMessageResponse> SendPrivateMessage(PrivateMessageRequest request);
 
     Task<PlayerActionResponse> ValidatePlayerAction(PlayerActionRequest request);
+    Task StartGame();
     Task RestartGame();
+    Task TerminateGame();
 }
