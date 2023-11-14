@@ -119,6 +119,14 @@ public partial class Game
             }
         );
 
+        hubConnection.On<string>(
+            "GameTerminated",
+            (message) =>
+            {
+                navigationManager.NavigateTo("");
+            }
+        );
+
         await hubConnection.StartAsync();
         ConnectionId = hubConnection.ConnectionId;
     }
@@ -196,6 +204,11 @@ public partial class Game
     public async Task RestartGame()
     {
         await serverHubService.RestartGame();
+    }
+
+    public async Task TerminateGame()
+    {
+        await serverHubService.TerminateGame();
     }
 }
 
