@@ -1,3 +1,6 @@
+using Welp.ServerLogic;
+using Welp.ServerData;
+
 namespace Welp.ServerHub.Models;
 
 public class ServerHubBaseModel { }
@@ -29,6 +32,7 @@ public class PrivateMessageResponse
 public class PlayerActionRequest
 {
     public string IdOrUserName { get; set; } = string.Empty;
+    public ActionRecord Action = new ActionRecord();
     public bool ValidAction { get; set; }
 }
 

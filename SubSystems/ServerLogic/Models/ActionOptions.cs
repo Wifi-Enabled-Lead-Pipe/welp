@@ -9,6 +9,7 @@ namespace Welp.ServerLogic
         public List<ActionOption<Movement>>? Movement { get; set; }
         public ActionOption<Suggestion>? Suggestion { get; set; }
         public ActionOption<Accusation>? Accusation { get; set; }
+        public ActionOption<bool> EndTurn { get; set; }
     }
 
     public class ActionOption<T>

@@ -4,7 +4,7 @@ namespace Welp.ServerData
 {
     public class Player
     {
-        public UserConnection User { get; set; }
+        public UserConnection User { get; set; } = new UserConnection();
         public Character Character { get; set; }
         public (int x, int y) Position { get; set; }
     }
