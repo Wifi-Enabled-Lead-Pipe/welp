@@ -1,4 +1,5 @@
-﻿using Welp.ServerHub;
+﻿using Welp.Pages;
+using Welp.ServerHub;
 
 namespace Welp.ServerData
 {
@@ -7,6 +8,8 @@ namespace Welp.ServerData
         public UserConnection User { get; set; } = new UserConnection();
         public Character Character { get; set; }
         public (int x, int y) Position { get; set; }
+        public List<Card> Cards { get; set; } = new List<Card>();
+        public GuessSheet GuessSheet { get; set; } = new GuessSheet();
     }
 
     public enum Character
