@@ -1,5 +1,6 @@
 using Welp.ServerLogic;
 using Welp.ServerHub;
+using System;
 
 namespace Welp.ServerData;
 
@@ -29,6 +30,7 @@ public class ServerDataService : IServerDataService
         State.Players = AssignPlayers(users);
         State.GameBoard = InitializeGameBoard(State.Players);
         State.CurrentPlayer = State.Players[0];
+        State = InitializeCards(State);
         return State.Clone();
     }
 
@@ -78,6 +80,48 @@ public class ServerDataService : IServerDataService
     public Task<ActionOptions> GetActionOptions(Game game, Player player)
     {
         return serverLogicService.GenerateActionOptions(game, player);
+    }
+
+    public Game InitializeCards(Game game)
+    {
+        List<Card> weaponCards = new List<Card>();
+        weaponCards = Enum.GetNames<Weapon>()
+            .Select(x => new Card() { CardType = CardType.Weapon, Value = x })
+            .ToList();
+
+        List<Card> roomCards = new List<Card>();
+        roomCards = Enum.GetNames<RoomName>()
+            .Select(x => new Card() { CardType = CardType.GameRoom, Value = x })
+            .ToList();
+
+        List<Card> characterCards = new List<Card>();
+        characterCards = Enum.GetNames<Character>()
+            .Select(x => new Card() { CardType = CardType.Character, Value = x })
+            .ToList();
+
+        weaponCards = weaponCards.OrderBy(x => Random.Shared.Next()).ToList();
+        roomCards = roomCards.OrderBy(x => Random.Shared.Next()).ToList();
+        characterCards = characterCards.OrderBy(x => Random.Shared.Next()).ToList();
+
+        game.Solution = new List<Card>() { weaponCards[0], roomCards[0], characterCards[0] };
+        weaponCards.RemoveAt(0);
+        roomCards.RemoveAt(0);
+        characterCards.RemoveAt(0);
+
+        List<Card> combinedList = weaponCards.Concat(roomCards).Concat(characterCards).ToList();
+        combinedList = combinedList.OrderBy(x => Random.Shared.Next()).ToList();
+
+        while (combinedList.Count >= game.Players.Count)
+        {
+            foreach (Player player in game.Players)
+            {
+                player.Cards.Add(combinedList[0]);
+                combinedList.RemoveAt(0);
+            }
+        }
+
+        game.KnownCards = combinedList;
+        return game;
     }
 
     public GameBoard InitializeGameBoard(List<Player> players)
