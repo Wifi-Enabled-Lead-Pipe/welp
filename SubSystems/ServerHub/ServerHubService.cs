@@ -144,4 +144,39 @@ public class ServerHubService : IServerHubService
         connectionService.Connections.Clear();
         await gameHub.Clients.All.SendAsync("GameTerminated", "Get Out!");
     }
+
+    public async Task<PlayerPrivateMessageResponse> ForwardPlayerPrivateMessage(
+        PlayerPrivateMessageRequest request
+    )
+    {
+        foreach (var kv in connectionService.Connections)
+        {
+            if (kv.Key.ToLower() == request.Recipient.User.Username.ToLower())
+            {
+                await gameHub.Clients
+                    .Client(kv.Key)
+                    .SendAsync("PlayerToSpecificPlayer", request.Message);
+                return new PlayerPrivateMessageResponse()
+                {
+                    Recipient = kv.Value,
+                    Message = request.Message
+                };
+            }
+            if (kv.Value.ToLower() == request.Recipient.User.Username.ToLower())
+            {
+                await gameHub.Clients
+                    .Client(kv.Key)
+                    .SendAsync("PlayerToSpecificPlayer", request.Message);
+                return new PlayerPrivateMessageResponse()
+                {
+                    Recipient = kv.Value,
+                    Message = request.Message
+                };
+            }
+        }
+        return new PlayerPrivateMessageResponse()
+        {
+            Message = "Undeliverable Message - connection not found."
+        };
+    }
 }
