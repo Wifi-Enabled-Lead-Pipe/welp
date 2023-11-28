@@ -294,6 +294,18 @@
                                         End Turn
                                     </button>
                                 </BSRow>
+
+                                <BSRow Justify="Justify.Center">
+                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
+                                        @bind-Value="RecipientString" />
+                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
+                                        @bind-Value="PlayerPrivateMessage" />
+
+                                    <button @onclick="SendPlayerPrivateMessage" type="button"
+                                        class="btn btn-warning massive-button" style="width: 300px">
+                                        Send Private Message to Player
+                                    </button>
+                                </BSRow>
                             }
                         </Content>
                     </BSAccordionItem>
