@@ -5,7 +5,6 @@
         public CardType CardType { get; set; }
         public string Value { get; set; }
 
-
         public string GetCardImage()
         {
             return $"card-{CardType.ToString().ToLower()}-{Value}.png";
@@ -18,6 +17,4 @@
         Character = 1,
         GameRoom = 2
     }
-
-    
 }

@@ -1,6 +1,9 @@
+using Welp.ServerData;
+
 public class GameSession
 {
     public string SessionID { get; set; }
+    public List<string> Lobby { get; set; }
 }
 
 // thing to store in database

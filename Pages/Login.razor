@@ -1,0 +1,48 @@
+@page "/login"
+
+@using PrettyBlazor
+
+<PageTitle>Login</PageTitle>
+
+<section class="py-5">
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col">
+                <h2>New Players</h2>
+                <p class="mb-0">
+                    We only need a little information about your self and how your friends will find you. Please fill
+                    out the form below and click "Submit"!
+                </p>
+                <div class="row">
+                    <div class="col">
+                        <EditForm Model="@newUserModel">
+                            <InputText @bind-Value="newUserModel!.UserName" placeholder="User Name" />
+                            <InputText @bind-Value="newUserModel!.UserEmail" placeholder="User Email" />
+                            <InputText @bind-Value="newUserModel!.UserPassword" placeholder="Password" />
+                        </EditForm>
+                    </div>
+                    <div class="col">
+                        <button @onclick="UserCreate" type="button" class="btn btn-primary massive-button">Create
+                            Account</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h2>Existing User Login</h2>
+                <p class="lead">Already have an account?</p>
+                <p class="mb-0">Just login.</p>
+                <div class="row">
+                    <div class="col">
+                        <EditForm Model="@oldUserModel">
+                            <InputText @bind-Value="oldUserModel!.UserName" placeholder="User Name" />
+                            <InputText @bind-Value="oldUserModel!.UserPassword" placeholder="User Password" />
+                        </EditForm>
+                    </div>
+                    <div class="col">
+                        <button @onclick="UserSignin" type="button" class="btn btn-primary massive-button">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
