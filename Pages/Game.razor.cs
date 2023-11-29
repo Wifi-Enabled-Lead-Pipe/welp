@@ -128,7 +128,7 @@ public partial class Game
         );
 
         await hubConnection.StartAsync();
-        ConnectionId = hubConnection.ConnectionId;
+        ConnectionId = hubConnection.ConnectionId ?? throw new Exception("Unable to connect");
     }
 
     public async ValueTask DisposeAsync()

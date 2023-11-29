@@ -13,4 +13,5 @@ public interface IServerHubService
     Task StartGame();
     Task RestartGame();
     Task TerminateGame();
+    Task RefreshGame(UserConnection userConnection);
 }

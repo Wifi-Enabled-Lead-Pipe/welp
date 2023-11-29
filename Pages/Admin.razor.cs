@@ -19,7 +19,7 @@ public partial class Admin
     public PrivateMessageRequest privateMessageRequest { get; set; } = new();
     public List<PrivateMessageResponse> privateMessageResponses { get; set; } = new();
 
-    protected override async Task OnInitializedAsync() { }
+    protected override void OnInitialized() { }
 
     public async Task BroadcastMessage()
     {
