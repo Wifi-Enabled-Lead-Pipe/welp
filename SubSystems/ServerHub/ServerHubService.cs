@@ -155,6 +155,7 @@ public class ServerHubService : IServerHubService
                 Message = JsonConvert.SerializeObject(game)
             }
         );
+    }
 
     public async Task<PlayerPrivateMessageResponse> ForwardPlayerPrivateMessage(
         PlayerPrivateMessageRequest request
