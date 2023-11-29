@@ -1,6 +1,7 @@
 using Welp.ServerLogic;
 using Welp.ServerHub;
 using System;
+using System.Data;
 
 namespace Welp.ServerData;
 
@@ -186,5 +187,11 @@ public class ServerDataService : IServerDataService
         };
 
         return gameBoard;
+    }
+
+    public Game ReplaceGameState(Game game)
+    {
+        State = game;
+        return State;
     }
 }

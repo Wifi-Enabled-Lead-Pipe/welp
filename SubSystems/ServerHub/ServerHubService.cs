@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Welp.Hubs;
-using Welp.Pages;
 using Welp.ServerData;
 using Welp.ServerHub.Models;
 using Welp.ServerLogic;
@@ -42,8 +41,8 @@ public class ServerHubService : IServerHubService
             if (kv.Key.ToLower() == request.IdOrUserName.ToLower())
             {
                 await gameHub.Clients
-                    .Client(kv.Key)
-                    .SendAsync("ServerToSpecificClient", request.Message);
+                    .Client(kv.Value)
+                    .SendAsync(request.MessageType ?? "ServerToSpecificClient", request.Message);
                 return new PrivateMessageResponse()
                 {
                     Recipient = kv.Value,
@@ -53,8 +52,8 @@ public class ServerHubService : IServerHubService
             if (kv.Value.ToLower() == request.IdOrUserName.ToLower())
             {
                 await gameHub.Clients
-                    .Client(kv.Key)
-                    .SendAsync("ServerToSpecificClient", request.Message);
+                    .Client(kv.Value)
+                    .SendAsync(request.MessageType ?? "ServerToSpecificClient", request.Message);
                 return new PrivateMessageResponse()
                 {
                     Recipient = kv.Value,
@@ -144,6 +143,18 @@ public class ServerHubService : IServerHubService
         connectionService.Connections.Clear();
         await gameHub.Clients.All.SendAsync("GameTerminated", "Get Out!");
     }
+
+    public async Task RefreshGame(UserConnection userConnection)
+    {
+        var game = serverDataService.GetGameState();
+        await SendPrivateMessage(
+            new PrivateMessageRequest()
+            {
+                IdOrUserName = userConnection.Username,
+                MessageType = "GameUpdated",
+                Message = JsonConvert.SerializeObject(game)
+            }
+        );
 
     public async Task<PlayerPrivateMessageResponse> ForwardPlayerPrivateMessage(
         PlayerPrivateMessageRequest request
