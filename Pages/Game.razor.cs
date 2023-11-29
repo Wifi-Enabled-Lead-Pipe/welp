@@ -31,6 +31,10 @@ public partial class Game
     public string ActionString { get; set; } = string.Empty;
     public string EndTurnString { get; set; } = string.Empty;
 
+    public string RecipientString { get; set; } = string.Empty;
+
+    public string PlayerPrivateMessage { get; set; } = string.Empty;
+
     [Inject]
     private NavigationManager? navigationManager { get; set; }
 
@@ -95,6 +99,7 @@ public partial class Game
                 CurrentOptions = await serverHubService.GetActionOptions();
                 ActionString = JsonConvert.SerializeObject(CurrentOptions.Movement.First());
                 EndTurnString = JsonConvert.SerializeObject(CurrentOptions.EndTurn);
+                RecipientString = JsonConvert.SerializeObject(Character.MissScarlet);
                 StateHasChanged();
             }
         );
@@ -114,6 +119,16 @@ public partial class Game
             (message) =>
             {
                 var encodedMsg = $"ServerToSpecificClient: {message}";
+                privateMessages.Add(encodedMsg);
+                StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
+            "PlayerToSpecificPlayer",
+            (message) =>
+            {
+                var encodedMsg = $"PlayerToSpecificPlayer: {message}";
                 privateMessages.Add(encodedMsg);
                 StateHasChanged();
             }
@@ -209,6 +224,22 @@ public partial class Game
     public async Task TerminateGame()
     {
         await serverHubService.TerminateGame();
+    }
+
+    public async Task SendPlayerPrivateMessage()
+    {
+        var Sender = State.Players.First(p => p.User.ConnectionId == ConnectionId);
+        var RecipientCharacter = JsonConvert.DeserializeObject<Character>(RecipientString);
+        var Recipient = State.Players.First(p => p.Character == RecipientCharacter);
+
+        PlayerPrivateMessageRequest request = new PlayerPrivateMessageRequest()
+        {
+            Sender = Sender,
+            Recipient = Recipient,
+            Message = PlayerPrivateMessage
+        };
+
+        await serverHubService.ForwardPlayerPrivateMessage(request);
     }
 }
 

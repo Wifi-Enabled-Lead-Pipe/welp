@@ -1,4 +1,6 @@
-﻿namespace Welp.ServerData
+﻿using Welp.ServerData;
+
+namespace Welp.ServerData
 {
     public class Card
     {
@@ -7,7 +9,7 @@
 
         public string GetCardImage()
         {
-            return $"card-{CardType.ToString().ToLower()}-{Value}.png";
+            return $"card-{CardType.ToString().ToLower()}-{Value.ToLower()}.png";
         }
     }
 
