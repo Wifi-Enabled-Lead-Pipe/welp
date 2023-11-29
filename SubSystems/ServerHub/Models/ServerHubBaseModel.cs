@@ -40,3 +40,18 @@ public class PlayerActionResponse
 {
     public string Status { get; set; } = string.Empty;
 }
+
+public class PlayerPrivateMessageRequest
+{
+    public Player Sender { get; set; } = new Player();
+    public Player Recipient { get; set; } = new Player();
+
+    public string Message { get; set; } = string.Empty;
+}
+
+public class PlayerPrivateMessageResponse
+{
+    public string Recipient { get; set; } = string.Empty;
+
+    public string Message { get; set; } = string.Empty;
+}

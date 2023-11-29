@@ -14,4 +14,7 @@ public interface IServerHubService
     Task RestartGame();
     Task TerminateGame();
     Task RefreshGame(UserConnection userConnection);
+    Task<PlayerPrivateMessageResponse> ForwardPlayerPrivateMessage(
+        PlayerPrivateMessageRequest request
+    );
 }
