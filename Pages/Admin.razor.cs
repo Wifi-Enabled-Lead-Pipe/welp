@@ -1,5 +1,8 @@
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Hosting.Server;
 using Newtonsoft.Json;
+using Welp.ServerData;
 using Welp.ServerHub;
 using Welp.ServerHub.Models;
 
@@ -12,12 +15,18 @@ public partial class Admin
 
     [Inject]
     public IServerHubService? serverHubService { get; set; }
+
+    [Inject]
+    public IServerDataService? serverDataService { get; set; }
     public HttpClient httpClient { get; set; } = new HttpClient();
     public BroadcastRequest broadcastRequest { get; set; } = new();
     public List<BroadcastResponse> broadcastResponses { get; set; } = new();
 
     public PrivateMessageRequest privateMessageRequest { get; set; } = new();
     public List<PrivateMessageResponse> privateMessageResponses { get; set; } = new();
+
+    public string CurrentGameString { get; set; } = string.Empty;
+    public string UpdateGameString { get; set; } = string.Empty;
 
     protected override void OnInitialized() { }
 
@@ -48,5 +57,41 @@ public partial class Admin
         privateMessageRequest = new();
         privateMessageResponses.Add(response);
         StateHasChanged();
+    }
+
+    public async Task FetchCurrentGame()
+    {
+        var game = serverDataService.GetGameState() ?? serverDataService.InitializeNewGame(new());
+
+        try
+        {
+            CurrentGameString = JsonConvert.SerializeObject(game, Formatting.Indented);
+        }
+        catch (Exception ex) { }
+
+        StateHasChanged();
+    }
+
+    public void SetUpdateFromCurrent()
+    {
+        UpdateGameString = CurrentGameString;
+        StateHasChanged();
+    }
+
+    public async Task UpdateCurrentGame()
+    {
+        var fallback =
+            serverDataService.GetGameState() ?? serverDataService.InitializeNewGame(new());
+
+        try
+        {
+            var newGameData = JsonConvert.DeserializeObject<ServerData.Game>(UpdateGameString);
+            if (newGameData is not null)
+            {
+                serverDataService.ReplaceGameState(newGameData);
+                await serverHubService.RefreshGame();
+            }
+        }
+        catch (Exception ex) { }
     }
 }

@@ -3,6 +3,7 @@
 
 @using Microsoft.AspNetCore.Components
 @using Newtonsoft.Json
+@using BlazorStrap
 @inject NavigationManager NavigationManager
 
 <PageTitle>Welp-Admin</PageTitle>
@@ -48,7 +49,6 @@
       </BSAccordion>
     </BSCol>
     <BSCol>
-
       <BSAccordion class="pt-5 pe-5">
         <BSAccordionItem>
           <Header><strong>
@@ -89,7 +89,50 @@
         </BSAccordionItem>
       </BSAccordion>
     </BSCol>
-
-
+  </BSRow>
+  <BSRow Justify="Justify.Center">
+    <BSCol>
+      <BSAccordion class="pt-5 pe-5">
+        <BSAccordionItem>
+          <Header><strong>
+              God-Mode
+            </strong></Header>
+          <Content>
+            <BSRow>
+              <BSCol Column="5">
+                <p class="lead">
+                  Current GameState
+                </p>
+                <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea" @bind-Value="CurrentGameString"
+                  IsDisabled="true" rows="25" />
+                <BSRow Justify="Justify.End" class="pt-2">
+                  <BSButton Color="BSColor.Primary" class="me-3 massive-button" style="max-width: 200px"
+                    @onclick="FetchCurrentGame">Fetch
+                    Current</BSButton>
+                </BSRow>
+              </BSCol>
+              <BSCol Column="2" class="d-flex justify-content-center">
+                <BSButton @onclick="SetUpdateFromCurrent">
+                  <BSImage Source="images/green-arrow.png" style="height: 300px;">
+                  </BSImage>
+                </BSButton>
+              </BSCol>
+              <BSCol>
+                <p class="lead">
+                  Update GameState
+                </p>
+                <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea" @bind-Value="UpdateGameString"
+                  rows="25" />
+                <BSRow Justify="Justify.End" class="pt-2">
+                  <BSButton Color="BSColor.Primary" class="me-3 massive-button" style="max-width: 200px"
+                    @onclick="UpdateCurrentGame">Update
+                    Game</BSButton>
+                </BSRow>
+              </BSCol>
+            </BSRow>
+          </Content>
+        </BSAccordionItem>
+      </BSAccordion>
+    </BSCol>
   </BSRow>
 </BSContainer>
