@@ -138,7 +138,7 @@ public partial class Game
             "GameTerminated",
             (message) =>
             {
-                navigationManager.NavigateTo("");
+                navigationManager.NavigateTo("/");
             }
         );
 

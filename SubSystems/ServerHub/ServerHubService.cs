@@ -80,13 +80,6 @@ public class ServerHubService : IServerHubService
             serverDataService.GetGameState(),
             request.Action
         );
-
-        // await BroadcastMessage(
-        //     new BroadcastRequest()
-        //     {
-        //         Message = $"Player: {request.IdOrUserName} took action {request.Action}."
-        //     }
-        // );
         await gameHub.Clients.All.SendAsync(
             "GameUpdated",
             JsonConvert.SerializeObject(newGameState)
@@ -157,6 +150,12 @@ public class ServerHubService : IServerHubService
         );
     }
 
+    public async Task RefreshGame()
+    {
+        var game = serverDataService.GetGameState();
+        await gameHub.Clients.All.SendAsync("GameUpdated", JsonConvert.SerializeObject(game));
+    }
+
     public async Task<PlayerPrivateMessageResponse> ForwardPlayerPrivateMessage(
         PlayerPrivateMessageRequest request
     )
@@ -174,6 +173,7 @@ public class ServerHubService : IServerHubService
                     Message = request.Message
                 };
             }
+
             if (kv.Value.ToLower() == request.Recipient.User.Username.ToLower())
             {
                 await gameHub.Clients
