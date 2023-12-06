@@ -46,6 +46,12 @@ public partial class Game
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
     private string IdOrUserName = string.Empty;
     private bool Host;
+    public int? MovementIndex { get; set; }
+    public int SuggestionWeapon { get; set; } = -1;
+    public int SuggestionCharacter { get; set; } = -1;
+    public int AccusationWeapon { get; set; } = -1;
+    public int AccusationCharacter { get; set; } = -1;
+    public int AccusationRoomName { get; set; } = -1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -240,6 +246,18 @@ public partial class Game
         };
 
         await serverHubService.ForwardPlayerPrivateMessage(request);
+    }
+
+    public async Task SubmitSuggestion()
+    {
+        Console.WriteLine(SuggestionWeapon + " - " + SuggestionCharacter);
+    }
+
+    public async Task SubmitAccusation()
+    {
+        Console.WriteLine(
+            AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName
+        );
     }
 }
 

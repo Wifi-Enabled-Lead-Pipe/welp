@@ -1,5 +1,7 @@
 @page "/game"
 @using Welp.ServerData;
+@using Newtonsoft.Json;
+@using Welp.ServerLogic;
 
 <PageTitle>Welp-Admin</PageTitle>
 <div class="row">
@@ -272,38 +274,149 @@
                             }
                             else
                             {
-                                <BSRow Justify="Justify.Center">
-                                    <p class="lead">
-                                        Please select an action.
-                                    </p>
-                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
-                                        @bind-Value="ActionString" />
+                                <BSNav IsTabs="true">
+                                    <BSNavItem>
+                                        <TabLabel>Movement</TabLabel>
+                                        <TabContent>
+                                            <p class="lead pt-3">
+                                                If you would like to move, make a selection and submit.
+                                            </p>
 
-                                    <button @onclick="SubmitPlayerAction" type="button"
-                                        class="btn btn-primary massive-button" style="width: 300px">
-                                        Send Selected Action
-                                    </button>
+                                            @if(MovementIndex is null)
+                                            {
+                                                <p>
+                                                    Nothing Selected
+                                                </p>
+                                            }
+                                            
+                                            
+                                            @foreach(var action in CurrentOptions?.Movement?.Select((m,i) => new {m,i}))
+                                            {
+                                                
+                                                <div Class="@BS.Form_Check">
+                                                    <BSInputRadio TValue="int?" CheckedValue="action.i" @bind-Value="MovementIndex" />
+                                                    <BSLabel IsCheckLabel="true">Move to (@action.m.Details.NewPosition.Item1, @action.m.Details.NewPosition.Item2)</BSLabel>
+                                                </div> 
+                                            }
+                                            <BSRow Justify="Justify.Center">
+                                                <button @onclick="SubmitPlayerAction" disabled="@(MovementIndex is null ? true : false)" type="button"
+                                                    class="btn btn-primary massive-button" style="width: 300px">
+                                                    Send Movement
+                                                </button>                                                
+                                            </BSRow>
+                                        </TabContent>    
+                                    </BSNavItem>
+                                    <BSNavItem>
+                                        <TabLabel>Suggestion</TabLabel>
+                                        <TabContent>
+                                            <p class="lead pt-3">
+                                                If you would like to make a suggestion, make a selection and submit.
+                                            </p>
+
+                                            @if(SuggestionWeapon <0 || SuggestionCharacter < 0)
+                                            {
+                                                <p>
+                                                    Must Select Both a Weapon and Character
+                                                </p>
+                                                
+                                            }
+
+                                            <BSInput TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="SuggestionWeapon" >                                            
+                                                <option value="-1">Select a Weapon</option>
+                                                <option value="0">@Weapon.Knife.ToString()</option>
+                                                <option value="1">@Weapon.CandleStick.ToString()</option>
+                                                <option value="2">@Weapon.Revolver.ToString()</option>
+                                                <option value="3">@Weapon.Rope.ToString()</option>
+                                                <option value="4">@Weapon.LeadPipe.ToString()</option>
+                                                <option value="5">@Weapon.Wrench.ToString()</option>
+                                            </BSInput>
+                                        
+                                            <BSInput class="mt-3" TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="SuggestionCharacter" >                                            
+                                                <option value="-1">Select a Character</option>
+                                                <option value="0">@Character.MissScarlet.ToString()</option>
+                                                <option value="1">@Character.ProfessorPlum.ToString()</option>
+                                                <option value="2">@Character.ColonelMustard.ToString()</option>
+                                                <option value="3">@Character.MrsPeacock.ToString()</option>
+                                                <option value="4">@Character.MrGreen.ToString()</option>
+                                                <option value="5">@Character.MrsWhite.ToString()</option>
+                                            </BSInput>
+                                            
+                                            <BSRow Justify="Justify.Center">
+                                                <button @onclick="SubmitSuggestion" disabled="@(SuggestionWeapon <0 || SuggestionCharacter <0)" type="button"
+                                                    class="btn btn-primary massive-button" style="width: 300px">
+                                                    Submit Suggestion
+                                                </button>
+                                            </BSRow>
+                                        </TabContent>
+                                        </BSNavItem>
+                                    <BSNavItem>
+                                        <TabLabel>Accusation</TabLabel>
+                                        <TabContent>
+                                            <p class="lead pt-3">
+                                                If you would like to make a suggestion, make a selection and submit.
+                                            </p>
+                                            
+                                            @if(AccusationWeapon <0  || AccusationCharacter <0 || AccusationRoomName <0)
+                                            {
+                                                <p>
+                                                    Must Select a Weapon, Character, and Room
+                                                </p>
+                                                
+                                            }
+                                            
+                                            <BSInput TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="AccusationWeapon" >                                            
+                                                <option value="-1">Select a Weapon</option>
+                                                <option value="0">@Weapon.Knife.ToString()</option>
+                                                <option value="1">@Weapon.CandleStick.ToString()</option>
+                                                <option value="2">@Weapon.Revolver.ToString()</option>
+                                                <option value="3">@Weapon.Rope.ToString()</option>
+                                                <option value="4">@Weapon.LeadPipe.ToString()</option>
+                                                <option value="5">@Weapon.Wrench.ToString()</option>
+                                            </BSInput>
+                                        
+                                            <BSInput class="mt-3" TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="AccusationCharacter" >                                            
+                                                <option value="-1">Select a Character</option>
+                                                <option value="0">@Character.MissScarlet.ToString()</option>
+                                                <option value="1">@Character.ProfessorPlum.ToString()</option>
+                                                <option value="2">@Character.ColonelMustard.ToString()</option>
+                                                <option value="3">@Character.MrsPeacock.ToString()</option>
+                                                <option value="4">@Character.MrGreen.ToString()</option>
+                                                <option value="5">@Character.MrsWhite.ToString()</option>
+                                            </BSInput>
+
+                                            <BSInput class="mt-3" TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="AccusationRoomName" >                                            
+                                                <option value="-1">Select a Room</option>                                                
+                                                <option value="0">@RoomName.Study.ToString()</option>
+                                                <option value="1">@RoomName.Hall.ToString()</option>
+                                                <option value="2">@RoomName.Lounge.ToString()</option>
+                                                <option value="3">@RoomName.Library.ToString()</option>
+                                                <option value="4">@RoomName.BilliardRoom.ToString()</option>
+                                                <option value="5">@RoomName.DiningRoom.ToString()</option>
+                                                <option value="6">@RoomName.Conservatory.ToString()</option>
+                                                <option value="7">@RoomName.Ballroom.ToString()</option>
+                                                <option value="8">@RoomName.Kitchen.ToString()</option>
+                                                
+                                            </BSInput>                                            
+                                            
+                                            <BSRow Justify="Justify.Center">
+                                                <button @onclick="SubmitAccusation" type="button" disabled="@(AccusationWeapon <0 || AccusationCharacter <0 || AccusationRoomName <0)"
+                                                    class="btn btn-primary massive-button" style="width: 300px">
+                                                    Submit Accusation
+                                                </button>
+                                            </BSRow>
+                                        </TabContent>
+                                    </BSNavItem>
+                                </BSNav>
+                                <BSRow Justify="Justify.Start">
 
                                 </BSRow>
-                                <BSRow Justify="Justify.Center">
-                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
-                                        @bind-Value="EndTurnString" />
 
+                                
+                                
+                                <BSRow Justify="Justify.Center">
                                     <button @onclick="SubmitEndTurnAction" type="button"
                                         class="btn btn-warning massive-button" style="width: 300px">
                                         End Turn
-                                    </button>
-                                </BSRow>
-
-                                <BSRow Justify="Justify.Center">
-                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
-                                        @bind-Value="RecipientString" />
-                                    <BSInput TValue="string" InputType="BlazorStrap.InputType.TextArea"
-                                        @bind-Value="PlayerPrivateMessage" />
-
-                                    <button @onclick="SendPlayerPrivateMessage" type="button"
-                                        class="btn btn-warning massive-button" style="width: 300px">
-                                        Send Private Message to Player
                                     </button>
                                 </BSRow>
                             }
