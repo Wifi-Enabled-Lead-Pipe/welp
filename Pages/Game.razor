@@ -485,22 +485,55 @@
                 </BSAccordion>
                 @if (State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId)?.Cards != null)
                 {
-                    <div style="overflow:scroll;">
                     <strong>Cards</strong>
+                    <div style="overflow:scroll;">
                     @foreach (var card in State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId).Cards)
                     {
-                            @if(card.CardType == CardType.Weapon)
+                            @if(card.CardType != CardType.GameRoom)
                             {
-                                <BSCol>
-                                    <img id="card" src=@card.GetCardImage() width=100 />
-                                </BSCol>
+                                <BSImage id="card" Source=@card.GetCardImage() width=200 />
                             }
 
                         }
                     </div>
                 }
+                @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
+                {
+                    <div>
+                <Header>Disproving Suggestion</Header>
+                 <Content>Select a card to disprove the suggestion.</Content>
+                 <Footer Context="modal">
+                        <BSInput TValue="Card" InputType="BlazorStrap.InputType.Select" @bind-Value="SelectedDisproveCard">
+                            @foreach (var card in SuggestionConfirmationCards)
+                            {
+                                <option value=@card>@card.Value</option>
+                            }
+                        </BSInput>
+                    <BSButton @onclick="SubmitDisproveSuggestion">Submit</BSButton>
+                </Footer>
+                    </div>
+                }
 
             </BSCol>
         </BSRow>
+
+        @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
+        {
+            <BSModal HideOnSubmit="true" IsCentered="true">
+                <Header>Disproving Suggestion</Header>
+                 <Content>Select a card to disprove the suggestion.</Content>
+                 <Footer Context="modal">
+                        <BSInput TValue="Card" InputType="BlazorStrap.InputType.Select" @bind-Value="SelectedDisproveCard">
+                            @foreach (var card in SuggestionConfirmationCards)
+                            {
+                                <option value=@card>@card.Value</option>
+                            }
+                        </BSInput>
+                    <BSButton @onclick="SubmitDisproveSuggestion">Submit</BSButton>
+                </Footer>
+            </BSModal>
+        }
     </div>
+
 </div>
+

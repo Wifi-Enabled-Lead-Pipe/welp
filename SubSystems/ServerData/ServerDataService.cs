@@ -57,7 +57,6 @@ public class ServerDataService : IServerDataService
             );
             State.CurrentPlayer = game.Players[(idx + 1) % game.Players.Count];
         }
-
         return State.Clone();
     }
 
