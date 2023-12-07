@@ -483,6 +483,23 @@
                     </BSAccordionItem>
 
                 </BSAccordion>
+                @if (State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId)?.Cards != null)
+                {
+                    <div style="overflow:scroll;">
+                    <strong>Cards</strong>
+                    @foreach (var card in State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId).Cards)
+                    {
+                            @if(card.CardType == CardType.Weapon)
+                            {
+                                <BSCol>
+                                    <img id="card" src=@card.GetCardImage() width=100 />
+                                </BSCol>
+                            }
+
+                        }
+                    </div>
+                }
+
             </BSCol>
         </BSRow>
     </div>

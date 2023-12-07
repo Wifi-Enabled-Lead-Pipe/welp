@@ -21,6 +21,7 @@ public partial class Game
     public GuessSheet Sheet { get; set; } = new();
     public ActionOptions CurrentOptions { get; set; } = new();
     public ActionRecord ActionRecord { get; set; } = new();
+    public List<Card> PlayerCards { get; set; } = new();
 
     public bool IAmScarlett =>
         Host
