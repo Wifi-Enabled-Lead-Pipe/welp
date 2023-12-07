@@ -1,8 +1,10 @@
+using BlazorStrap.V5;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Diagnostics.Contracts;
 using System.Runtime.Serialization;
@@ -21,6 +23,9 @@ public partial class Game
     public GuessSheet Sheet { get; set; } = new();
     public ActionOptions CurrentOptions { get; set; } = new();
     public ActionRecord ActionRecord { get; set; } = new();
+    public List<Card> PlayerCards { get; set; } = new();
+    public List<Card> SuggestionConfirmationCards { get; set; } = new();
+    public Card SelectedDisproveCard { get; set; } = new();
 
     public bool IAmScarlett =>
         Host
@@ -28,6 +33,8 @@ public partial class Game
             == Character.MissScarlet;
 
     public bool IsPlayerTurn => State.CurrentPlayer.User.ConnectionId == ConnectionId;
+    public bool IsPlayerConfirmingSuggestion =>
+        State.ConfirmingPlayer.User.ConnectionId == ConnectionId;
     public string ActionString { get; set; } = string.Empty;
     public string EndTurnString { get; set; } = string.Empty;
 
@@ -103,7 +110,7 @@ public partial class Game
                     ?? throw new Exception("Unable to Deserialize Game");
 
                 CurrentOptions = await serverHubService.GetActionOptions();
-                ActionString = JsonConvert.SerializeObject(CurrentOptions.Movement.First());
+                ActionString = JsonConvert.SerializeObject(State.ActionRegister.Last().ToString());
                 EndTurnString = JsonConvert.SerializeObject(CurrentOptions.EndTurn);
                 RecipientString = JsonConvert.SerializeObject(Character.MissScarlet);
                 StateHasChanged();
@@ -148,6 +155,27 @@ public partial class Game
             }
         );
 
+        hubConnection.On<string>(
+            "ConfirmSuggestion",
+            (message) =>
+            {
+                State.ConfirmingPlayer = State.Players
+                    .Where(p => p.User.ConnectionId == ConnectionId)
+                    .First();
+                SuggestionConfirmationCards = JsonConvert.DeserializeObject<List<Card>>(message);
+                StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
+            "SubmitConfirmation",
+            (message) =>
+            {
+                SuggestionConfirmationCards = JsonConvert.DeserializeObject<List<Card>>(message);
+                StateHasChanged();
+            }
+        );
+
         await hubConnection.StartAsync();
         ConnectionId = hubConnection.ConnectionId ?? throw new Exception("Unable to connect");
     }
@@ -178,6 +206,9 @@ public partial class Game
 
     public async Task SubmitPlayerAction()
     {
+        int idx = MovementIndex == null ? 0 : MovementIndex.Value;
+        ActionString = JsonConvert.SerializeObject(CurrentOptions.Movement[idx]);
+
         var action = JsonConvert.DeserializeObject<ActionOption<Movement>>(ActionString);
         var currentPlayer = State.Players.First(p => p.User.ConnectionId == ConnectionId);
         await serverHubService.SubmitPlayerAction(
@@ -250,7 +281,45 @@ public partial class Game
 
     public async Task SubmitSuggestion()
     {
+        //var action = JsonConvert.DeserializeObject<ActionOption<Suggestion>>(ActionString);
+        var currentPlayer = State.Players.First(p => p.User.ConnectionId == ConnectionId);
+        var actionRequest = new PlayerActionRequest()
+        {
+            IdOrUserName = IdOrUserName,
+            Action = new ActionRecord()
+            {
+                ActionType = ActionType.Suggestion,
+                ActionDetails = new Dictionary<string, string>()
+                {
+                    { "Weapon", Enum.GetName(typeof(Weapon), SuggestionWeapon) },
+                    { "Character", Enum.GetName(typeof(Character), SuggestionCharacter) },
+                    {
+                        "GameRoom",
+                        Enum.GetName(
+                            State.GameBoard.GameRooms
+                                .Where(r => r.Position == currentPlayer.Position)
+                                .First()
+                                .RoomName
+                        )
+                    },
+                },
+                Player = currentPlayer
+            },
+            ValidAction = true
+        };
+        await serverHubService.SubmitPlayerAction(actionRequest);
         Console.WriteLine(SuggestionWeapon + " - " + SuggestionCharacter);
+
+        await serverHubService.ProcessSuggestion(
+            actionRequest.Action.ActionDetails["Weapon"],
+            actionRequest.Action.ActionDetails["Character"],
+            actionRequest.Action.ActionDetails["GameRoom"]
+        );
+    }
+
+    public async Task SubmitDisproveSuggestion()
+    {
+        await serverHubService.SendDisproveSuggestion(SelectedDisproveCard);
     }
 
     public async Task SubmitAccusation()

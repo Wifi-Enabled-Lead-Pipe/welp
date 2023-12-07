@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Welp.Hubs;
+using Welp.Pages;
 using Welp.ServerData;
 using Welp.ServerHub.Models;
 using Welp.ServerLogic;
@@ -72,6 +73,72 @@ public class ServerHubService : IServerHubService
         var game = serverDataService.GetGameState();
         var actionOptions = await serverDataService.GetActionOptions(game, game.CurrentPlayer);
         return actionOptions;
+    }
+
+    public async Task ProcessSuggestion(string weapon, string character, string room)
+    {
+        bool disproved = false;
+        var game = serverDataService.GetGameState();
+        List<Player> playersToAsk = game.Players
+            .Where(p => p.Character != game.CurrentPlayer.Character)
+            .ToList();
+        int i = 0;
+        while (!disproved && i < playersToAsk.Count)
+        {
+            var playerCardValues = playersToAsk[i].Cards.Select(c => c.Value).ToList();
+            var cardsToShow = new List<Card>();
+            if (playerCardValues.Contains(weapon))
+            {
+                cardsToShow.Add(playersToAsk[i].Cards.Where(c => c.Value == weapon).First());
+            }
+            if (playerCardValues.Contains(character))
+            {
+                cardsToShow.Add(playersToAsk[i].Cards.Where(c => c.Value == character).First());
+            }
+            if (playerCardValues.Contains(room))
+            {
+                cardsToShow.Add(playersToAsk[i].Cards.Where(c => c.Value == room).First());
+            }
+
+            if (cardsToShow.Count == 0)
+            {
+                i++;
+            }
+            else
+            {
+                await SolicitSuggestionConfirmation(playersToAsk[0], cardsToShow);
+                disproved = true;
+            }
+        }
+    }
+
+    public async Task SolicitSuggestionConfirmation(Player playerToAsk, List<Card> cardsToShow)
+    {
+        await SendPrivateMessage(
+            new PrivateMessageRequest()
+            {
+                IdOrUserName = playerToAsk.User.ConnectionId,
+                MessageType = "ConfirmSuggestion",
+                Message = JsonConvert.SerializeObject(cardsToShow)
+            }
+        );
+    }
+
+    public async Task SendDisproveSuggestion(Card disproveCard)
+    {
+        var game = serverDataService.GetGameState();
+
+        if (disproveCard != null)
+        {
+            await SendPrivateMessage(
+                new PrivateMessageRequest()
+                {
+                    IdOrUserName = game.CurrentPlayer.User.ConnectionId,
+                    Message =
+                        $"{game.ConfirmingPlayer.Character} has shown you their {disproveCard.Value} card."
+                }
+            );
+        }
     }
 
     public async Task<PlayerActionResponse> SubmitPlayerAction(PlayerActionRequest request)

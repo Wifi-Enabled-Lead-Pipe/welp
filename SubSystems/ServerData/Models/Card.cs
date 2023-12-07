@@ -9,7 +9,7 @@ namespace Welp.ServerData
 
         public string GetCardImage()
         {
-            return $"card-{CardType.ToString().ToLower()}-{Value.ToLower()}.png";
+            return $"\\images\\cards\\card-{CardType.ToString().ToLower()}-{Value.ToLower()}.png";
         }
     }
 
