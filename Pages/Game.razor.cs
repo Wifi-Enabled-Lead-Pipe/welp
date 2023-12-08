@@ -368,8 +368,30 @@ public partial class Game
 
     public async Task SubmitAccusation()
     {
-        Console.WriteLine(
-            AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName
+        var currentPlayer = State.Players.First(p => p.User.ConnectionId == ConnectionId);
+        var actionRequest = new PlayerActionRequest()
+        {
+            IdOrUserName = IdOrUserName,
+            Action = new ActionRecord()
+            {
+                ActionType = ActionType.Accusation,
+                ActionDetails = new Dictionary<string, string>()
+                {
+                    { "Weapon", Enum.GetName(typeof(Weapon), AccusationWeapon) },
+                    { "Character", Enum.GetName(typeof(Character), AccusationCharacter) },
+                    { "GameRoom", Enum.GetName(typeof(RoomName), AccusationRoomName) },
+                },
+                Player = currentPlayer
+            },
+            ValidAction = true
+        };
+        await serverHubService.SubmitPlayerAction(actionRequest);
+        Console.WriteLine(AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName);
+
+        await serverHubService.ProcessAccusation(
+            actionRequest.Action.ActionDetails["Weapon"],
+            actionRequest.Action.ActionDetails["Character"],
+            actionRequest.Action.ActionDetails["GameRoom"]
         );
     }
 

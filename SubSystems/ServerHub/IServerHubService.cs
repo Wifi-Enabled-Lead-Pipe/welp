@@ -10,6 +10,7 @@ public interface IServerHubService
     Task<PrivateMessageResponse> SendPrivateMessage(PrivateMessageRequest request);
     Task<PlayerActionResponse> SubmitPlayerAction(PlayerActionRequest request);
     Task ProcessSuggestion(string weapon, string character, string room);
+    Task ProcessAccusation(string weapon, string character, string room);
     Task SolicitSuggestionConfirmation(Player playerToAsk, List<Card> cardsToShow);
     Task SendDisproveSuggestion(Card disproveCard);
     Task<ActionOptions> GetActionOptions();
