@@ -134,6 +134,7 @@ public class ServerHubService : IServerHubService
                 new PrivateMessageRequest()
                 {
                     IdOrUserName = game.CurrentPlayer.User.ConnectionId,
+                    MessageType = "PlayerShowedYouACard",
                     Message =
                         $"{game.ConfirmingPlayer.Character} has shown you their {disproveCard.Value} card."
                 }
