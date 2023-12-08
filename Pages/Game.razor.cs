@@ -1,3 +1,4 @@
+using BlazorStrap;
 using BlazorStrap.V5;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -33,8 +34,22 @@ public partial class Game
             == Character.MissScarlet;
 
     public bool IsPlayerTurn => State.CurrentPlayer.User.ConnectionId == ConnectionId;
-    public bool IsPlayerConfirmingSuggestion =>
-        State.ConfirmingPlayer.User.ConnectionId == ConnectionId;
+    public bool IsPlayerConfirmingSuggestion
+    {
+        get
+        {
+            try
+            {
+                return State.ConfirmingPlayer.User.ConnectionId == ConnectionId;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+    }
+
     public string ActionString { get; set; } = string.Empty;
     public string EndTurnString { get; set; } = string.Empty;
 
@@ -48,6 +63,9 @@ public partial class Game
     [Inject]
     private IServerHubService? serverHubService { get; set; }
 
+    [Inject]
+    private IBlazorStrap? blazorStrap { get; set; }
+
     public List<string> privateMessages = new List<string>();
     public List<string> broadcastMessages = new List<string>();
     public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
@@ -59,6 +77,8 @@ public partial class Game
     public int AccusationWeapon { get; set; } = -1;
     public int AccusationCharacter { get; set; } = -1;
     public int AccusationRoomName { get; set; } = -1;
+
+    public BSModal? M1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -110,7 +130,9 @@ public partial class Game
                     ?? throw new Exception("Unable to Deserialize Game");
 
                 CurrentOptions = await serverHubService.GetActionOptions();
-                ActionString = JsonConvert.SerializeObject(State.ActionRegister.Last().ToString());
+                ActionString = State.ActionRegister.Any()
+                    ? JsonConvert.SerializeObject(State.ActionRegister.Last().ToString())
+                    : "";
                 EndTurnString = JsonConvert.SerializeObject(CurrentOptions.EndTurn);
                 RecipientString = JsonConvert.SerializeObject(Character.MissScarlet);
                 StateHasChanged();
@@ -157,12 +179,16 @@ public partial class Game
 
         hubConnection.On<string>(
             "ConfirmSuggestion",
-            (message) =>
+            async (message) =>
             {
                 State.ConfirmingPlayer = State.Players
                     .Where(p => p.User.ConnectionId == ConnectionId)
                     .First();
-                SuggestionConfirmationCards = JsonConvert.DeserializeObject<List<Card>>(message);
+                SuggestionConfirmationCards = JsonConvert.DeserializeObject<List<Card>>(message)!;
+                if (M1 is not null)
+                {
+                    await M1.ShowAsync();
+                }
                 StateHasChanged();
             }
         );
@@ -172,6 +198,23 @@ public partial class Game
             (message) =>
             {
                 SuggestionConfirmationCards = JsonConvert.DeserializeObject<List<Card>>(message);
+                StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
+            "PlayerShowedYouACard",
+            (message) =>
+            {
+                blazorStrap.Toaster.Add(
+                    "Your Guess Was Disproven",
+                    message,
+                    o =>
+                    {
+                        o.Color = BSColor.Info;
+                        o.CloseAfter = 3000;
+                    }
+                );
                 StateHasChanged();
             }
         );
@@ -319,6 +362,7 @@ public partial class Game
 
     public async Task SubmitDisproveSuggestion()
     {
+        await M1.HideAsync();
         await serverHubService.SendDisproveSuggestion(SelectedDisproveCard);
     }
 
@@ -327,6 +371,44 @@ public partial class Game
         Console.WriteLine(
             AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName
         );
+    }
+
+    public bool CanMove()
+    {
+        // can on first turn
+        if (State.ActionRegister.Count == 0)
+        {
+            return true;
+        }
+
+        return State.ActionRegister.Last().Value.ActionType == ActionType.EndTurn;
+    }
+
+    public bool CanSuggest()
+    {
+        // cannot suggest on first turn
+        if (State.ActionRegister.Count == 0)
+        {
+            return false;
+        }
+
+        var lastActionWasMovementToRoom =
+            State.ActionRegister.Last().Value.ActionType == ActionType.MoveRoom;
+
+        var playerRemainsInRoom =
+            State.ActionRegister.Last().Value.ActionType == ActionType.EndTurn
+            && State.CurrentPlayer.Position.x + State.CurrentPlayer.Position.y % 2 == 0;
+
+        return lastActionWasMovementToRoom || playerRemainsInRoom;
+    }
+
+    public async Task ShowModal()
+    {
+        // if (M1 is not null)
+        // {
+        //     await M1.ShowAsync();
+        // }
+        blazorStrap.Toaster.Add("cktest");
     }
 }
 

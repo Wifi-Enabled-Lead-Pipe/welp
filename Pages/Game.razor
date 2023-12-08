@@ -2,8 +2,11 @@
 @using Welp.ServerData;
 @using Newtonsoft.Json;
 @using Welp.ServerLogic;
+@using BlazorStrap;
 
-<PageTitle>Welp-Admin</PageTitle>
+<PageTitle>A Game Of Welps</PageTitle>
+
+<BSToaster></BSToaster>
 <div class="row">
     <div class="col">
         <img class="game-board" src="images/game-board-2.png" alt="..." />
@@ -225,7 +228,7 @@
 
     </div>
     <div class="col">
-        <BSRow>
+        <BSRow class="mb-5">
             <BSCol>
                 <BSAccordion class="pt-5 pe-5">
                     @if (IAmScarlett)
@@ -238,21 +241,24 @@
                             </Header>
                             <Content>
                                 <BSRow Justify="Justify.Center">
-                  <p class="lead">
-                    You are the host, would you like to start/reset the game?
-                  </p>
-                  @if(State.Players.Count == 0 ){
-                    <button @onclick="RestartGame" type="button" class="btn btn-success massive-button"
-                    style="width: 300px">Start
-                  </button>
-                  }
-                  
-                  <button @onclick="RestartGame" type="button" class="btn btn-warning massive-button ms-2"
-                    style="width: 300px">Restart
-                  </button>
-                  <button @onclick="TerminateGame" type="button" class="btn btn-danger massive-button ms-2"
-                    style="width: 300px">Terminate
-                  </button>
+                                    <p class="lead">
+                                        You are the host, would you like to start/reset the game?
+                                    </p>
+                                    @if(State.Players.Count == 0 ){
+                                        <button @onclick="RestartGame" type="button" class="btn btn-success massive-button"
+                                        style="width: 300px">Start
+                                    </button>
+                                    }
+                                    
+                                    <button @onclick="RestartGame" type="button" class="btn btn-warning massive-button ms-2"
+                                        style="width: 300px">Restart
+                                    </button>
+                                    <button @onclick="TerminateGame" type="button" class="btn btn-danger massive-button ms-2"
+                                        style="width: 300px">Terminate
+                                    </button>
+                                    <button @onclick="ShowModal" type="button" class="btn btn-secondary massive-button ms-2"
+                                        style="width: 300px">Cktest
+                                    </button>
                                 </BSRow>
                             </Content>
                         </BSAccordionItem>
@@ -278,75 +284,87 @@
                                     <BSNavItem>
                                         <TabLabel>Movement</TabLabel>
                                         <TabContent>
-                                            <p class="lead pt-3">
-                                                If you would like to move, make a selection and submit.
-                                            </p>
-
-                                            @if(MovementIndex is null)
-                                            {
-                                                <p>
-                                                    Nothing Selected
+                                            @if(CanMove()){
+                                                <p class="lead pt-3">
+                                                    If you would like to move, make a selection and submit.
+                                                </p>
+                                                @if(MovementIndex is null)
+                                                {
+                                                    <p>
+                                                        Nothing Selected
+                                                    </p>
+                                                }                                               
+                                                
+                                                @foreach(var action in CurrentOptions?.Movement?.Select((m,i) => new {m,i}))
+                                                {
+                                                    
+                                                    <div Class="@BS.Form_Check">
+                                                        <BSInputRadio TValue="int?" CheckedValue="action.i" @bind-Value="MovementIndex" />
+                                                        <BSLabel IsCheckLabel="true">Move to (@action.m.Details.NewPosition.Item1, @action.m.Details.NewPosition.Item2)</BSLabel>
+                                                    </div> 
+                                                }
+                                                <BSRow Justify="Justify.Center">
+                                                    <button @onclick="SubmitPlayerAction" disabled="@(MovementIndex is null ? true : false)" type="button"
+                                                        class="btn btn-primary massive-button" style="width: 300px">
+                                                        Send Movement
+                                                    </button>                                                
+                                                </BSRow>
+                                            }else {
+                                                <p class="lead pt-3">
+                                                    Can't Move At This Time
                                                 </p>
                                             }
-                                            
-                                            
-                                            @foreach(var action in CurrentOptions?.Movement?.Select((m,i) => new {m,i}))
-                                            {
-                                                
-                                                <div Class="@BS.Form_Check">
-                                                    <BSInputRadio TValue="int?" CheckedValue="action.i" @bind-Value="MovementIndex" />
-                                                    <BSLabel IsCheckLabel="true">Move to (@action.m.Details.NewPosition.Item1, @action.m.Details.NewPosition.Item2)</BSLabel>
-                                                </div> 
-                                            }
-                                            <BSRow Justify="Justify.Center">
-                                                <button @onclick="SubmitPlayerAction" disabled="@(MovementIndex is null ? true : false)" type="button"
-                                                    class="btn btn-primary massive-button" style="width: 300px">
-                                                    Send Movement
-                                                </button>                                                
-                                            </BSRow>
+
                                         </TabContent>    
                                     </BSNavItem>
                                     <BSNavItem>
                                         <TabLabel>Suggestion</TabLabel>
                                         <TabContent>
-                                            <p class="lead pt-3">
-                                                If you would like to make a suggestion, make a selection and submit.
-                                            </p>
-
-                                            @if(SuggestionWeapon <0 || SuggestionCharacter < 0)
-                                            {
-                                                <p>
-                                                    Must Select Both a Weapon and Character
+                                            @if(CanSuggest()) {
+                                                <p class="lead pt-3">
+                                                    If you would like to make a suggestion, make a selection and submit.
                                                 </p>
+
+                                                @if(SuggestionWeapon <0 || SuggestionCharacter < 0)
+                                                {
+                                                    <p>
+                                                        Must Select Both a Weapon and Character
+                                                    </p>
+                                                    
+                                                }
+
+                                                <BSInput TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="SuggestionWeapon" >                                            
+                                                    <option value="-1">Select a Weapon</option>
+                                                    <option value="0">@Weapon.Knife.ToString()</option>
+                                                    <option value="1">@Weapon.CandleStick.ToString()</option>
+                                                    <option value="2">@Weapon.Revolver.ToString()</option>
+                                                    <option value="3">@Weapon.Rope.ToString()</option>
+                                                    <option value="4">@Weapon.LeadPipe.ToString()</option>
+                                                    <option value="5">@Weapon.Wrench.ToString()</option>
+                                                </BSInput>
+                                            
+                                                <BSInput class="mt-3" TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="SuggestionCharacter" >                                            
+                                                    <option value="-1">Select a Character</option>
+                                                    <option value="0">@Character.MissScarlet.ToString()</option>
+                                                    <option value="1">@Character.ProfessorPlum.ToString()</option>
+                                                    <option value="2">@Character.ColonelMustard.ToString()</option>
+                                                    <option value="3">@Character.MrsPeacock.ToString()</option>
+                                                    <option value="4">@Character.MrGreen.ToString()</option>
+                                                    <option value="5">@Character.MrsWhite.ToString()</option>
+                                                </BSInput>
                                                 
+                                                <BSRow Justify="Justify.Center">
+                                                    <button @onclick="SubmitSuggestion" disabled="@(SuggestionWeapon <0 || SuggestionCharacter <0)" type="button"
+                                                        class="btn btn-primary massive-button" style="width: 300px">
+                                                        Submit Suggestion
+                                                    </button>
+                                                </BSRow>                                                
+                                            } else {
+                                                <p class="lead pt-3">
+                                                    Must be in a room to make a suggestion
+                                                </p>
                                             }
 
-                                            <BSInput TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="SuggestionWeapon" >                                            
-                                                <option value="-1">Select a Weapon</option>
-                                                <option value="0">@Weapon.Knife.ToString()</option>
-                                                <option value="1">@Weapon.CandleStick.ToString()</option>
-                                                <option value="2">@Weapon.Revolver.ToString()</option>
-                                                <option value="3">@Weapon.Rope.ToString()</option>
-                                                <option value="4">@Weapon.LeadPipe.ToString()</option>
-                                                <option value="5">@Weapon.Wrench.ToString()</option>
-                                            </BSInput>
-                                        
-                                            <BSInput class="mt-3" TValue="int" InputType="BlazorStrap.InputType.Select" @bind-Value="SuggestionCharacter" >                                            
-                                                <option value="-1">Select a Character</option>
-                                                <option value="0">@Character.MissScarlet.ToString()</option>
-                                                <option value="1">@Character.ProfessorPlum.ToString()</option>
-                                                <option value="2">@Character.ColonelMustard.ToString()</option>
-                                                <option value="3">@Character.MrsPeacock.ToString()</option>
-                                                <option value="4">@Character.MrGreen.ToString()</option>
-                                                <option value="5">@Character.MrsWhite.ToString()</option>
-                                            </BSInput>
-                                            
-                                            <BSRow Justify="Justify.Center">
-                                                <button @onclick="SubmitSuggestion" disabled="@(SuggestionWeapon <0 || SuggestionCharacter <0)" type="button"
-                                                    class="btn btn-primary massive-button" style="width: 300px">
-                                                    Submit Suggestion
-                                                </button>
-                                            </BSRow>
                                         </TabContent>
                                         </BSNavItem>
                                     <BSNavItem>
@@ -409,15 +427,42 @@
                                 </BSNav>
                                 <BSRow Justify="Justify.Start">
 
-                                </BSRow>
-
-                                
-                                
+                                </BSRow>                                
                                 <BSRow Justify="Justify.Center">
                                     <button @onclick="SubmitEndTurnAction" type="button"
                                         class="btn btn-warning massive-button" style="width: 300px">
                                         End Turn
                                     </button>
+                                </BSRow>
+                            }
+                        </Content>
+                    </BSAccordionItem>
+
+
+                </BSAccordion>
+
+            </BSCol>
+        </BSRow>
+        <BSRow >
+            <BSCol>
+                <BSAccordion class="pt-5 pe-5">
+                    <BSAccordionItem>
+                        <Header><strong>My Cards</strong></Header>
+                        <Content>
+                            @if (State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId)?.Cards != null)
+                            {
+                                <strong>Cards</strong>
+                                <BSRow>
+                                    @foreach (var card in State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId).Cards)
+                                    {
+                                        @if(card.CardType != Welp.ServerData.CardType.GameRoom)
+                                        {
+                                            <BSCol>
+                                                <BSImage id="card" Source=@card.GetCardImage() width=200 />
+                                            </BSCol>
+                                        }
+
+                                    }
                                 </BSRow>
                             }
                         </Content>
@@ -432,7 +477,7 @@
                                 {
                                     <BSRow Justify="Justify.Center">
                                         <BSCol>@suspect</BSCol>
-                                        @foreach (var bi in Enumerable.Range(0, guesses.Count))
+                                        @foreach (var bi in Enumerable.Range(0, 2))
                                         {
                                             <BSCol>
                                                 <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Suspects[suspect][bi]">
@@ -481,59 +526,48 @@
 
                         </Content>
                     </BSAccordionItem>
-
                 </BSAccordion>
-                @if (State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId)?.Cards != null)
-                {
-                    <strong>Cards</strong>
-                    <div style="overflow:scroll;">
-                    @foreach (var card in State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId).Cards)
-                    {
-                            @if(card.CardType != CardType.GameRoom)
-                            {
-                                <BSImage id="card" Source=@card.GetCardImage() width=200 />
-                            }
-
-                        }
-                    </div>
-                }
-                @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
-                {
-                    <div>
-                <Header>Disproving Suggestion</Header>
-                 <Content>Select a card to disprove the suggestion.</Content>
-                 <Footer Context="modal">
-                        <BSInput TValue="Card" InputType="BlazorStrap.InputType.Select" @bind-Value="SelectedDisproveCard">
-                            @foreach (var card in SuggestionConfirmationCards)
-                            {
-                                <option value=@card>@card.Value</option>
-                            }
-                        </BSInput>
-                    <BSButton @onclick="SubmitDisproveSuggestion">Submit</BSButton>
-                </Footer>
-                    </div>
-                }
-
             </BSCol>
         </BSRow>
 
-        @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
-        {
-            <BSModal HideOnSubmit="true" IsCentered="true">
-                <Header>Disproving Suggestion</Header>
-                 <Content>Select a card to disprove the suggestion.</Content>
-                 <Footer Context="modal">
-                        <BSInput TValue="Card" InputType="BlazorStrap.InputType.Select" @bind-Value="SelectedDisproveCard">
-                            @foreach (var card in SuggestionConfirmationCards)
-                            {
-                                <option value=@card>@card.Value</option>
-                            }
-                        </BSInput>
-                    <BSButton @onclick="SubmitDisproveSuggestion">Submit</BSButton>
-                </Footer>
-            </BSModal>
-        }
     </div>
 
 </div>
 
+<BSModal DataId="M1" @ref="M1" IsCentered="true" Size="Size.Large">
+    <Header>Someone Made a Suggestion</Header>
+    <Content>
+
+        @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
+        {
+            <BSRow Justify="Justify.Center">
+                
+                @foreach(var card in SuggestionConfirmationCards)
+                {
+                    <div style="max-width:150px">
+                        <BSInputRadio TValue="Card" CheckedValue="@(card)" @bind-Value="SelectedDisproveCard" IsToggle="true" Color="BSColor.Primary" >
+                            <BSImage id="card" Source=@card.GetCardImage() width=100 />
+                        </BSInputRadio>
+                    </div>
+                    
+                    
+                }
+            </BSRow>
+        } else {
+            <p>Sorry, you can't disprove this...</p>
+        }
+    
+    </Content>
+    <Footer Context="modal">
+        @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
+        {
+            <BSButton Color="BSColor.Primary" @onclick="SubmitDisproveSuggestion" >Disprove</BSButton>
+        } else {
+            <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close Without Disprove</BSButton>
+        }
+        
+    </Footer>
+</BSModal>
+
+
+ 
