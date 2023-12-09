@@ -117,17 +117,27 @@ public class ServerHubService : IServerHubService
         bool disproved = false;
         var game = serverDataService.GetGameState();
         var solution = game.Solution;
-        var solutionWeapon = solution.Where(c => c.CardType == CardType.Weapon).FirstOrDefault().Value;
-        var solutionCharacter = solution.Where(c => c.CardType == CardType.Character).FirstOrDefault().Value;
-        var solutionRoom = solution.Where(c => c.CardType == CardType.GameRoom).FirstOrDefault().Value;
+        var solutionWeapon = solution
+            .Where(c => c.CardType == CardType.Weapon)
+            .FirstOrDefault()
+            .Value;
+        var solutionCharacter = solution
+            .Where(c => c.CardType == CardType.Character)
+            .FirstOrDefault()
+            .Value;
+        var solutionRoom = solution
+            .Where(c => c.CardType == CardType.GameRoom)
+            .FirstOrDefault()
+            .Value;
         if (weapon == solutionWeapon && character == solutionCharacter && room == solutionRoom)
         {
             await BroadcastMessage(
                 new BroadcastRequest()
                 {
-                    Message = $"Player {game.CurrentPlayer.User.ConnectionId} made a correct accusation. " +
-                    $"Player {game.CurrentPlayer.User.ConnectionId} wins! " +
-                    $"Solution: Weapon = {solutionWeapon}, Character = {solutionCharacter}, Room = {solutionRoom}"
+                    Message =
+                        $"Player {game.CurrentPlayer.User.ConnectionId} made a correct accusation. "
+                        + $"Player {game.CurrentPlayer.User.ConnectionId} wins! "
+                        + $"Solution: Weapon = {solutionWeapon}, Character = {solutionCharacter}, Room = {solutionRoom}"
                 }
             );
             // terminate game after x seconds or something ?? idk

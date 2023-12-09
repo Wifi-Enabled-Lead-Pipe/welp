@@ -9,7 +9,7 @@
 <BSToaster></BSToaster>
 <div class="row">
     <div class="col">
-        <img class="game-board" src="images/game-board-2.png" alt="..." />
+        <img class="game-board" src="images/game-board-big.png" alt="..." />
         <div>
             <div class="room x-2 y2">
                 <BSRow Justify="Justify.Center">
@@ -256,9 +256,10 @@
                                     <button @onclick="TerminateGame" type="button" class="btn btn-danger massive-button ms-2"
                                         style="width: 300px">Terminate
                                     </button>
-                                    <button @onclick="ShowModal" type="button" class="btn btn-secondary massive-button ms-2"
+                                    @* This is a button for testing random functions *@
+                                    @* <button @onclick="ShowModal" type="button" class="btn btn-secondary massive-button ms-2"
                                         style="width: 300px">Cktest
-                                    </button>
+                                    </button> *@
                                 </BSRow>
                             </Content>
                         </BSAccordionItem>
@@ -298,21 +299,31 @@
                                                 @foreach(var action in CurrentOptions?.Movement?.Select((m,i) => new {m,i}))
                                                 {
                                                     
-                                                    <div Class="@BS.Form_Check">
-                                                        <BSInputRadio TValue="int?" CheckedValue="action.i" @bind-Value="MovementIndex" />
-                                                        <BSLabel IsCheckLabel="true">Move to (@action.m.Details.NewPosition.Item1, @action.m.Details.NewPosition.Item2)</BSLabel>
+                                                    <div Class="@BS.Form_Check">                                                        
+                                                        <BSLabel IsCheckLabel="true">
+                                                            <BSInputRadio TValue="int?" CheckedValue="action.i" @bind-Value="MovementIndex" />
+                                                            Move to (@action.m.Details.NewPosition.Item1, @action.m.Details.NewPosition.Item2)
+                                                        </BSLabel>
                                                     </div> 
                                                 }
                                                 <BSRow Justify="Justify.Center">
                                                     <button @onclick="SubmitPlayerAction" disabled="@(MovementIndex is null ? true : false)" type="button"
                                                         class="btn btn-primary massive-button" style="width: 300px">
                                                         Send Movement
-                                                    </button>                                                
+                                                    </button>               
+                                                    <button @onclick="SubmitEndTurnAction" type="button" class="btn btn-warning massive-button ms-2" style="width: 300px">
+                                                        End Turn
+                                                    </button>                                 
                                                 </BSRow>
                                             }else {
                                                 <p class="lead pt-3">
                                                     Can't Move At This Time
                                                 </p>
+                                                <BSRow Justify="Justify.Center">
+                                                    <button @onclick="SubmitEndTurnAction" type="button" class="btn btn-warning massive-button" style="width: 300px">
+                                                        End Turn
+                                                    </button>
+                                                </BSRow>                                                   
                                             }
 
                                         </TabContent>    
@@ -358,11 +369,19 @@
                                                         class="btn btn-primary massive-button" style="width: 300px">
                                                         Submit Suggestion
                                                     </button>
+                                                    <button @onclick="SubmitEndTurnAction" type="button" class="btn btn-warning massive-button  ms-2" style="width: 300px">
+                                                        End Turn
+                                                    </button>
                                                 </BSRow>                                                
                                             } else {
                                                 <p class="lead pt-3">
                                                     Must be in a room to make a suggestion
                                                 </p>
+                                                <BSRow Justify="Justify.Center">
+                                                    <button @onclick="SubmitEndTurnAction" type="button" class="btn btn-warning massive-button" style="width: 300px">
+                                                        End Turn
+                                                    </button>
+                                                </BSRow>   
                                             }
 
                                         </TabContent>
@@ -421,19 +440,13 @@
                                                     class="btn btn-primary massive-button" style="width: 300px">
                                                     Submit Accusation
                                                 </button>
+                                                <button @onclick="SubmitEndTurnAction" type="button" class="btn btn-warning massive-button  ms-2" style="width: 300px">
+                                                    End Turn
+                                                </button>
                                             </BSRow>
                                         </TabContent>
                                     </BSNavItem>
-                                </BSNav>
-                                <BSRow Justify="Justify.Start">
-
-                                </BSRow>                                
-                                <BSRow Justify="Justify.Center">
-                                    <button @onclick="SubmitEndTurnAction" type="button"
-                                        class="btn btn-warning massive-button" style="width: 300px">
-                                        End Turn
-                                    </button>
-                                </BSRow>
+                                </BSNav>                      
                             }
                         </Content>
                     </BSAccordionItem>
@@ -455,13 +468,9 @@
                                 <BSRow>
                                     @foreach (var card in State.Players.FirstOrDefault(p => p.User.ConnectionId == ConnectionId).Cards)
                                     {
-                                        @if(card.CardType != Welp.ServerData.CardType.GameRoom)
-                                        {
-                                            <BSCol>
-                                                <BSImage id="card" Source=@card.GetCardImage() width=200 />
-                                            </BSCol>
-                                        }
-
+                                        <BSCol>
+                                            <BSImage id="card" Source=@card.GetCardImage() height=250 />
+                                        </BSCol>   
                                     }
                                 </BSRow>
                             }
@@ -477,7 +486,7 @@
                                 {
                                     <BSRow Justify="Justify.Center">
                                         <BSCol>@suspect</BSCol>
-                                        @foreach (var bi in Enumerable.Range(0, 2))
+                                        @foreach (var bi in Enumerable.Range(0, guesses.Count))
                                         {
                                             <BSCol>
                                                 <BSInputCheckbox TValue="bool" @bind-Value="Sheet.Suspects[suspect][bi]">
@@ -549,8 +558,7 @@
                             <BSImage id="card" Source=@card.GetCardImage() width=100 />
                         </BSInputRadio>
                     </div>
-                    
-                    
+
                 }
             </BSRow>
         } else {
@@ -561,7 +569,7 @@
     <Footer Context="modal">
         @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
         {
-            <BSButton Color="BSColor.Primary" @onclick="SubmitDisproveSuggestion" >Disprove</BSButton>
+            <BSButton Color="BSColor.Primary" @onclick="SubmitDisproveSuggestion" disabled="@(SelectedDisproveCard is not null)" >Disprove</BSButton>
         } else {
             <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close Without Disprove</BSButton>
         }

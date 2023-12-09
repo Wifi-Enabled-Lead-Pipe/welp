@@ -173,7 +173,11 @@ public partial class Game
             "GameTerminated",
             (message) =>
             {
-                navigationManager.NavigateTo("/");
+                try
+                {
+                    navigationManager.NavigateTo("/");
+                }
+                catch (Exception e) { } // swallow
             }
         );
 
@@ -386,7 +390,9 @@ public partial class Game
             ValidAction = true
         };
         await serverHubService.SubmitPlayerAction(actionRequest);
-        Console.WriteLine(AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName);
+        Console.WriteLine(
+            AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName
+        );
 
         await serverHubService.ProcessAccusation(
             actionRequest.Action.ActionDetails["Weapon"],
@@ -413,6 +419,8 @@ public partial class Game
         {
             return false;
         }
+
+        Console.WriteLine(JsonConvert.SerializeObject(State.ActionRegister.Last()));
 
         var lastActionWasMovementToRoom =
             State.ActionRegister.Last().Value.ActionType == ActionType.MoveRoom;
