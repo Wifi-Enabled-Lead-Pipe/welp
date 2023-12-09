@@ -112,6 +112,32 @@ public class ServerHubService : IServerHubService
         }
     }
 
+    public async Task ProcessAccusation(string weapon, string character, string room)
+    {
+        bool disproved = false;
+        var game = serverDataService.GetGameState();
+        var solution = game.Solution;
+        var solutionWeapon = solution.Where(c => c.CardType == CardType.Weapon).FirstOrDefault().Value;
+        var solutionCharacter = solution.Where(c => c.CardType == CardType.Character).FirstOrDefault().Value;
+        var solutionRoom = solution.Where(c => c.CardType == CardType.GameRoom).FirstOrDefault().Value;
+        if (weapon == solutionWeapon && character == solutionCharacter && room == solutionRoom)
+        {
+            await BroadcastMessage(
+                new BroadcastRequest()
+                {
+                    Message = $"Player {game.CurrentPlayer.User.ConnectionId} made a correct accusation. " +
+                    $"Player {game.CurrentPlayer.User.ConnectionId} wins! " +
+                    $"Solution: Weapon = {solutionWeapon}, Character = {solutionCharacter}, Room = {solutionRoom}"
+                }
+            );
+            // terminate game after x seconds or something ?? idk
+        }
+        else
+        {
+            // figure out what to do here; do we just end player turn & remove them?
+        }
+    }
+
     public async Task SolicitSuggestionConfirmation(Player playerToAsk, List<Card> cardsToShow)
     {
         await SendPrivateMessage(
