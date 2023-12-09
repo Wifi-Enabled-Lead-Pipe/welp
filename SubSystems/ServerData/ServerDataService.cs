@@ -55,9 +55,29 @@ public class ServerDataService : IServerDataService
             int idx = game.Players.FindIndex(
                 p => p.User.ConnectionId == game.CurrentPlayer.User.ConnectionId
             );
-            State.CurrentPlayer = game.Players[(idx + 1) % game.Players.Count];
+            State.CurrentPlayer = game.Players[FindNextPlayer(game.Players, idx)];
         }
         return State.Clone();
+    }
+
+    private int FindNextPlayer(List<Player> players, int currIdx)
+    {
+        int nextPlayerIdx = currIdx;
+        bool found = false;
+        int i = currIdx;
+        while (!found && (players.Where(p => p.Eliminated).Count() != players.Count))
+        {
+            nextPlayerIdx = (i + 1) % players.Count;
+            if (players[nextPlayerIdx].Eliminated)
+            {
+                i++;
+            }
+            else
+            {
+                found = true;
+            }
+        }
+        return nextPlayerIdx;
     }
 
     public List<Player> AssignPlayers(List<UserConnection> users)
@@ -75,6 +95,18 @@ public class ServerDataService : IServerDataService
             );
         }
         return players;
+    }
+
+    public Game RemovePlayer(Game game, Player player)
+    {
+        State = game.Clone();
+
+        int idxToUpdate = game.Players.FindIndex(
+            p => p.User.ConnectionId == player.User.ConnectionId
+        );
+        State.Players[idxToUpdate].Eliminated = true;
+
+        return State.Clone();
     }
 
     public Task<ActionOptions> GetActionOptions(Game game, Player player)
@@ -191,6 +223,14 @@ public class ServerDataService : IServerDataService
     public Game ReplaceGameState(Game game)
     {
         State = game;
+        return State;
+    }
+
+    public Game GameWon(Game game, Player winner)
+    {
+        State = game;
+        State.GameOver = true;
+        State.Winner = winner;
         return State;
     }
 }

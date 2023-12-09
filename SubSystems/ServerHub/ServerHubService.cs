@@ -117,24 +117,35 @@ public class ServerHubService : IServerHubService
         bool disproved = false;
         var game = serverDataService.GetGameState();
         var solution = game.Solution;
-        var solutionWeapon = solution.Where(c => c.CardType == CardType.Weapon).FirstOrDefault().Value;
-        var solutionCharacter = solution.Where(c => c.CardType == CardType.Character).FirstOrDefault().Value;
-        var solutionRoom = solution.Where(c => c.CardType == CardType.GameRoom).FirstOrDefault().Value;
+        var solutionWeapon = solution
+            .Where(c => c.CardType == CardType.Weapon)
+            .FirstOrDefault()
+            .Value;
+        var solutionCharacter = solution
+            .Where(c => c.CardType == CardType.Character)
+            .FirstOrDefault()
+            .Value;
+        var solutionRoom = solution
+            .Where(c => c.CardType == CardType.GameRoom)
+            .FirstOrDefault()
+            .Value;
         if (weapon == solutionWeapon && character == solutionCharacter && room == solutionRoom)
         {
             await BroadcastMessage(
                 new BroadcastRequest()
                 {
-                    Message = $"Player {game.CurrentPlayer.User.ConnectionId} made a correct accusation. " +
-                    $"Player {game.CurrentPlayer.User.ConnectionId} wins! " +
-                    $"Solution: Weapon = {solutionWeapon}, Character = {solutionCharacter}, Room = {solutionRoom}"
+                    Message =
+                        $"Player {game.CurrentPlayer.User.ConnectionId} made a correct accusation. "
+                        + $"Player {game.CurrentPlayer.User.ConnectionId} wins! "
+                        + $"Solution: Weapon = {solutionWeapon}, Character = {solutionCharacter}, Room = {solutionRoom}"
                 }
             );
-            // terminate game after x seconds or something ?? idk
+            serverDataService.GameWon(game, game.CurrentPlayer);
+            await gameHub.Clients.All.SendAsync("GameWon", JsonConvert.SerializeObject(game));
         }
         else
         {
-            // figure out what to do here; do we just end player turn & remove them?
+            serverDataService.RemovePlayer(game, game.CurrentPlayer);
         }
     }
 

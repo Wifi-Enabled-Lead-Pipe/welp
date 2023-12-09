@@ -371,7 +371,7 @@
                                         <TabLabel>Accusation</TabLabel>
                                         <TabContent>
                                             <p class="lead pt-3">
-                                                If you would like to make a suggestion, make a selection and submit.
+                                                If you would like to make an accusation, make a selection and submit.
                                             </p>
                                             
                                             @if(AccusationWeapon <0  || AccusationCharacter <0 || AccusationRoomName <0)
@@ -570,4 +570,22 @@
 </BSModal>
 
 
- 
+<BSModal DataId="M2" @ref="M2" IsCentered="true" Size="Size.Large">
+    <Header>Game Over!</Header>
+    <Content>
+            <BSRow Justify="Justify.Center">
+                <div>Solution</div>
+                @foreach (var card in State.Solution)
+                {
+                    <div style="max-width:150px">
+                        <BSImage id="card" Source=@card.GetCardImage() width=100 />
+                    </div>
+                }
+            </BSRow>
+            <BSRow>Winner is @State.Winner.Character</BSRow>
+    </Content>
+    <Footer Context="modal">
+        <BSButton Color="BSColor.Primary" @onclick="TerminateGame">Return to home</BSButton>
+    </Footer>
+</BSModal>
+
