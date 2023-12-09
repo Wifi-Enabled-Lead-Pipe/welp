@@ -85,6 +85,8 @@ public partial class Game
 
     public BSModal? M1;
 
+    public BSModal? M2;
+
     protected override async Task OnInitializedAsync()
     {
         var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
@@ -224,6 +226,18 @@ public partial class Game
                         o.CloseAfter = 3000;
                     }
                 );
+                StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
+            "GameWon",
+            async (message) =>
+            {
+                if (M2 is not null)
+                {
+                    await M2.ShowAsync();
+                }
                 StateHasChanged();
             }
         );

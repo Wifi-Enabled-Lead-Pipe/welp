@@ -140,11 +140,12 @@ public class ServerHubService : IServerHubService
                         + $"Solution: Weapon = {solutionWeapon}, Character = {solutionCharacter}, Room = {solutionRoom}"
                 }
             );
-            // terminate game after x seconds or something ?? idk
+            serverDataService.GameWon(game, game.CurrentPlayer);
+            await gameHub.Clients.All.SendAsync("GameWon", JsonConvert.SerializeObject(game));
         }
         else
         {
-            // figure out what to do here; do we just end player turn & remove them?
+            serverDataService.RemovePlayer(game, game.CurrentPlayer);
         }
     }
 

@@ -13,6 +13,8 @@ namespace Welp.ServerData
         public Player ConfirmingPlayer { get; set; } = new();
         public List<Card> Solution { get; set; } = new();
         public List<Card> KnownCards { get; set; } = new();
+        public bool GameOver { get; set; } = false;
+        public Player Winner { get; set; } = new();
 
         public Game Clone() =>
             JsonConvert.DeserializeObject<Game>(JsonConvert.SerializeObject(this))
