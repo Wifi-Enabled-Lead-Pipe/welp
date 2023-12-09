@@ -16,7 +16,7 @@
 
                     @foreach (var player in State.Players.Where(p => p.Position == (-2, 2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                         <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -24,7 +24,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-1, 2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                        <img class="piece-img" src="@(GetPiece(player))" />       
                     }
                 </BSRow>
             </div>
@@ -32,15 +32,15 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (0, 2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                        <img class="piece-img" src="@(GetPiece(player))" />                         
                     }
                 </BSRow>
             </div>
             <div class="room x1 y2">
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (1, 2)))
-                    {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                    {                             
+                        <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -48,7 +48,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (2, 2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                         <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -59,7 +59,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-2, 1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                         <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -67,7 +67,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-1, 1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                         <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -75,7 +75,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (0, 1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                        <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -83,7 +83,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (1, 1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -91,7 +91,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (2, 1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -102,7 +102,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-2, 0)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -110,7 +110,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-1, 0)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -118,7 +118,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (0, 0)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -126,7 +126,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (1, 0)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -134,7 +134,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (2, 0)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -145,7 +145,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-2, -1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -153,7 +153,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-1, -1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -161,7 +161,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (0, -1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -169,7 +169,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (1, -1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -177,7 +177,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (2, -1)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -188,7 +188,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-2, -2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -196,7 +196,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (-1, -2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -204,7 +204,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (0, -2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -212,7 +212,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (1, -2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                             <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -220,7 +220,7 @@
                 <BSRow Justify="Justify.Center">
                     @foreach (var player in State.Players.Where(p => p.Position == (2, -2)))
                     {
-                        <div class="piece" id="@("character-"+player.Character.ToString())"></div>
+                            <img class="piece-img" src="@(GetPiece(player))" />
                     }
                 </BSRow>
             </div>
@@ -236,7 +236,7 @@
                         <BSAccordionItem>
                             <Header>
                                 <strong>
-                                    Host Actions
+                                    Host Actions (You are Scarlett)
                                 </strong>
                             </Header>
                             <Content>
@@ -256,10 +256,6 @@
                                     <button @onclick="TerminateGame" type="button" class="btn btn-danger massive-button ms-2"
                                         style="width: 300px">Terminate
                                     </button>
-                                    @* This is a button for testing random functions *@
-                                    @* <button @onclick="ShowModal" type="button" class="btn btn-secondary massive-button ms-2"
-                                        style="width: 300px">Cktest
-                                    </button> *@
                                 </BSRow>
                             </Content>
                         </BSAccordionItem>
@@ -267,7 +263,7 @@
                     <BSAccordionItem DefaultShown="IsPlayerTurn">
                         <Header>
                             <strong>
-                                Player Actions
+                                Player Actions @(MyPlayer is null ? "" : "[You are " + MyPlayer + "]")
                             </strong>
                         </Header>
                         <Content>
@@ -456,7 +452,7 @@
 
             </BSCol>
         </BSRow>
-        <BSRow >
+        <BSRow>
             <BSCol>
                 <BSAccordion class="pt-5 pe-5">
                     <BSAccordionItem>

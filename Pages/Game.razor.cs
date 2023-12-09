@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Welp.ServerData;
 using Welp.ServerHub;
@@ -34,6 +35,10 @@ public partial class Game
             == Character.MissScarlet;
 
     public bool IsPlayerTurn => State.CurrentPlayer.User.ConnectionId == ConnectionId;
+    public string? MyPlayer =>
+        State.Players
+            .FirstOrDefault(p => p.User.ConnectionId == ConnectionId)
+            ?.Character.ToString();
     public bool IsPlayerConfirmingSuggestion
     {
         get
@@ -420,14 +425,12 @@ public partial class Game
             return false;
         }
 
-        Console.WriteLine(JsonConvert.SerializeObject(State.ActionRegister.Last()));
-
         var lastActionWasMovementToRoom =
             State.ActionRegister.Last().Value.ActionType == ActionType.MoveRoom;
 
         var playerRemainsInRoom =
             State.ActionRegister.Last().Value.ActionType == ActionType.EndTurn
-            && State.CurrentPlayer.Position.x + State.CurrentPlayer.Position.y % 2 == 0;
+            && (State.CurrentPlayer.Position.x + State.CurrentPlayer.Position.y) % 2 == 0;
 
         return lastActionWasMovementToRoom || playerRemainsInRoom;
     }
@@ -440,6 +443,19 @@ public partial class Game
         // }
         blazorStrap.Toaster.Add("cktest");
     }
+
+    public string GetPiece(Player player) =>
+        player.Character switch
+        {
+            Character.MissScarlet => "images/pieces/pawn-scarlet.png",
+            Character.ProfessorPlum => "images/pieces/pawn-plum.png",
+            Character.ColonelMustard => "images/pieces/pawn-mustard.png",
+            Character.MrsPeacock => "images/pieces/pawn-peacock.png",
+            Character.MrGreen => "images/pieces/pawn-green.png",
+            Character.MrsWhite => "images/pieces/pawn-white.png",
+
+            _ => ""
+        };
 }
 
 public class GuessSheet
