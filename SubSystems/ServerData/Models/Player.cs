@@ -10,6 +10,7 @@ namespace Welp.ServerData
         public (int x, int y) Position { get; set; }
         public List<Card> Cards { get; set; } = new List<Card>();
         public GuessSheet GuessSheet { get; set; } = new GuessSheet();
+        public bool Eliminated { get; set; }
     }
 
     public enum Character
