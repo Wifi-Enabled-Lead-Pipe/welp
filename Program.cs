@@ -1,3 +1,13 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Graph = Microsoft.Graph;
+
 using Welp.Hubs;
 using Microsoft.AspNetCore.ResponseCompression;
 using Welp.ServerData;
@@ -20,8 +30,25 @@ builder.Services.AddSwaggerGen(c =>
     var filePath = Path.Combine(AppContext.BaseDirectory, "Welp.xml");
     c.IncludeXmlComments(filePath);
 });
+
+var initialScopes = builder.Configuration["DownstreamApi:Scopes"]?.Split(' ');
+
+builder.Services
+    .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+    .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+    .AddInMemoryTokenCaches();
+builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
+
+builder.Services.AddAuthorization(options =>
+{
+    // By default, all incoming requests will be authorized according to the default policy
+    options.FallbackPolicy = options.DefaultPolicy;
+});
+
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
 builder.Services.AddBlazorStrap();
 
 builder.Services.AddSingleton<ConnectionService>();
@@ -30,8 +57,6 @@ builder.Services.AddTransient<IPostLaunchService, PostLaunchService>();
 builder.Services.AddSingleton<IServerDataService, ServerDataService>();
 builder.Services.AddTransient<IServerHubService, ServerHubService>();
 builder.Services.AddTransient<IServerLogicService, ServerLogicService>();
-
-builder.Services.AddControllers();
 
 builder.Services.AddResponseCompression(opts =>
 {
@@ -63,6 +88,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapHub<GameHub>("/gamehub");
