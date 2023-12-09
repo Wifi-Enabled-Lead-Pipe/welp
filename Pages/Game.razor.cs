@@ -386,7 +386,9 @@ public partial class Game
             ValidAction = true
         };
         await serverHubService.SubmitPlayerAction(actionRequest);
-        Console.WriteLine(AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName);
+        Console.WriteLine(
+            AccusationWeapon + " - " + AccusationCharacter + " - " + AccusationRoomName
+        );
 
         await serverHubService.ProcessAccusation(
             actionRequest.Action.ActionDetails["Weapon"],
