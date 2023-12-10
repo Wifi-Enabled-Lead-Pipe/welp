@@ -221,7 +221,7 @@ public partial class Game
                     o =>
                     {
                         o.Color = BSColor.Info;
-                        o.CloseAfter = 3000;
+                        o.CloseAfter = 10000;
                     }
                 );
                 StateHasChanged();
