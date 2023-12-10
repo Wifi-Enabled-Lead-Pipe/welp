@@ -147,7 +147,11 @@ public class ServerHubService : IServerHubService
                         + $"Solution: Weapon = {solutionWeapon}, Character = {solutionCharacter}, Room = {solutionRoom}"
                 }
             );
-            serverDataService.GameWon(game, game.CurrentPlayer);
+            var newGameState = serverDataService.GameWon(game, game.CurrentPlayer);
+            await gameHub.Clients.All.SendAsync(
+                "GameUpdated",
+                JsonConvert.SerializeObject(newGameState)
+            );
             await gameHub.Clients.All.SendAsync("GameWon", JsonConvert.SerializeObject(game));
         }
         else
