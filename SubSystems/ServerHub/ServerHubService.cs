@@ -110,11 +110,18 @@ public class ServerHubService : IServerHubService
                 disproved = true;
             }
         }
+        await SendPrivateMessage(
+            new PrivateMessageRequest()
+            {
+                IdOrUserName = game.CurrentPlayer.User.ConnectionId,
+                MessageType = "SuggestionNotDisproved",
+            }
+        );
+        //await gameHub.Clients.All.SendAsync("SuggestionNotDisproved");
     }
 
     public async Task ProcessAccusation(string weapon, string character, string room)
     {
-        bool disproved = false;
         var game = serverDataService.GetGameState();
         var solution = game.Solution;
         var solutionWeapon = solution
@@ -145,6 +152,10 @@ public class ServerHubService : IServerHubService
         }
         else
         {
+            await gameHub.Clients.All.SendAsync(
+                "IncorrectAccusation",
+                $"{game.CurrentPlayer.Character} made an incorrect accusation and no longer has a turn!"
+            );
             serverDataService.RemovePlayer(game, game.CurrentPlayer);
         }
     }

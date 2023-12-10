@@ -50,6 +50,24 @@ public class ServerDataService : IServerDataService
                 .Position = newPosition;
         }
         State = game.Clone();
+        if (action.ActionType == ActionType.Suggestion)
+        {
+            Character suggestedCharacter = Enum.Parse<Character>(action.ActionDetails["Character"]);
+
+            if (State.Players.FindIndex(p => p.Character == suggestedCharacter) > -1)
+            {
+                (int x, int y) suggestedRoomPosition = State.GameBoard.GameRooms
+                    .Where(
+                        r => r.RoomName == Enum.Parse<RoomName>(action.ActionDetails["GameRoom"])
+                    )
+                    .First()
+                    .Position;
+                State.Players
+                    .Where(p => p.Character == suggestedCharacter)
+                    .FirstOrDefault()
+                    .Position = suggestedRoomPosition;
+            }
+        }
         if (action.ActionType == ActionType.EndTurn)
         {
             int idx = game.Players.FindIndex(
