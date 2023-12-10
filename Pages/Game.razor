@@ -549,6 +549,7 @@
 
         @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
         {
+            <p>Select A Card from your hand to disprove their suggestion.</p>
             <BSRow Justify="Justify.Center">
                 
                 @foreach(var card in SuggestionConfirmationCards)
@@ -569,7 +570,7 @@
     <Footer Context="modal">
         @if (IsPlayerConfirmingSuggestion && SuggestionConfirmationCards.Count != 0)
         {
-            <BSButton Color="BSColor.Primary" @onclick="SubmitDisproveSuggestion" disabled="@(SelectedDisproveCard is not null)" >Disprove</BSButton>
+            <BSButton Color="BSColor.Primary" @onclick="SubmitDisproveSuggestion" disabled="@(SelectedDisproveCard is null)" >Disprove</BSButton>
         } else {
             <BSButton MarginStart="Margins.Auto" Color="BSColor.Secondary" @onclick="modal.HideAsync">Close Without Disprove</BSButton>
         }
