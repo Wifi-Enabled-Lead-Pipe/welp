@@ -1,15 +1,11 @@
+using BlafettisLib;
 using BlazorStrap;
 using BlazorStrap.V5;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Data;
-using System.Diagnostics.Contracts;
-using System.Linq.Expressions;
-using System.Runtime.Serialization;
 using Welp.ServerData;
 using Welp.ServerHub;
 using Welp.ServerHub.Models;
@@ -86,6 +82,8 @@ public partial class Game
     public BSModal? M1;
 
     public BSModal? M2;
+
+    public Blafettis? blafettis;
 
     protected override async Task OnInitializedAsync()
     {
@@ -470,6 +468,11 @@ public partial class Game
 
             _ => ""
         };
+
+    public void RaiseConfetti()
+    {
+        blafettis.RaiseConfetti();
+    }
 }
 
 public class GuessSheet
