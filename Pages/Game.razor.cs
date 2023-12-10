@@ -229,6 +229,39 @@ public partial class Game
         );
 
         hubConnection.On<string>(
+            "IncorrectAccusation",
+            (message) =>
+            {
+                blazorStrap.Toaster.Add(
+                    "Incorrect Accusation!",
+                    message,
+                    o =>
+                    {
+                        o.Color = BSColor.Info;
+                        o.CloseAfter = 10000;
+                    }
+                );
+                StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
+            "SuggestionNotDisproved",
+            (message) =>
+            {
+                blazorStrap.Toaster.Add(
+                    "Your Guess Could Not Be Disproved By Any Player!",
+                    o =>
+                    {
+                        o.Color = BSColor.Info;
+                        o.CloseAfter = 10000;
+                    }
+                );
+                StateHasChanged();
+            }
+        );
+
+        hubConnection.On<string>(
             "GameWon",
             async (message) =>
             {
