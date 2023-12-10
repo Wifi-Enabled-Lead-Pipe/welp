@@ -55,18 +55,21 @@ public class GameHub : Hub
         var game = serverDataService.GetGameState();
         var pIndex = game.Players.FindIndex(p => p.User.Username == userConnection.Username);
 
-        // replace current player
-        if (game.CurrentPlayer.User.Username == game.Players[pIndex].User.Username)
+        if (pIndex > -1)
         {
-            // replace new connection in players list
-            game.Players[pIndex].User = userConnection;
-            game.CurrentPlayer = game.Players[pIndex];
-        }
-        else
-        {
-            game.Players[pIndex].User = userConnection;
-        }
+            // replace current player
+            if (game.CurrentPlayer.User.Username == game.Players[pIndex].User.Username)
+            {
+                // replace new connection in players list
+                game.Players[pIndex].User = userConnection;
+                game.CurrentPlayer = game.Players[pIndex];
+            }
+            else
+            {
+                game.Players[pIndex].User = userConnection;
+            }
 
-        serverDataService.ReplaceGameState(game);
+            serverDataService.ReplaceGameState(game);
+        }
     }
 }
