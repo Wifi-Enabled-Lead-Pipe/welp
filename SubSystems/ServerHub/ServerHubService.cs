@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
+using System;
 using Welp.Hubs;
 using Welp.Pages;
 using Welp.ServerData;
@@ -117,7 +118,6 @@ public class ServerHubService : IServerHubService
                 MessageType = "SuggestionNotDisproved",
             }
         );
-        //await gameHub.Clients.All.SendAsync("SuggestionNotDisproved");
     }
 
     public async Task ProcessAccusation(string weapon, string character, string room)
@@ -156,6 +156,21 @@ public class ServerHubService : IServerHubService
                 "IncorrectAccusation",
                 $"{game.CurrentPlayer.Character} made an incorrect accusation and no longer has a turn!"
             );
+
+            var newGameState = serverDataService.UpdateGame(
+                game,
+                new ActionRecord()
+                {
+                    ActionType = ActionType.EndTurn,
+                    ActionDetails = new Dictionary<string, string>() { },
+                    Player = game.CurrentPlayer
+                }
+            );
+            await gameHub.Clients.All.SendAsync(
+                "GameUpdated",
+                JsonConvert.SerializeObject(newGameState)
+            );
+
             serverDataService.RemovePlayer(game, game.CurrentPlayer);
         }
     }
