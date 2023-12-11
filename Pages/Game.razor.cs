@@ -91,6 +91,8 @@ public partial class Game
 
     protected override async Task OnInitializedAsync()
     {
+        // toastService = new ToastService();
+
         var uri = navigationManager.ToAbsoluteUri(navigationManager.Uri);
 
         IdOrUserName = QueryHelpers.ParseQuery(uri.Query)["username"];
