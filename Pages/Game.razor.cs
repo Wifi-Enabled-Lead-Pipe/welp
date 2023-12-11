@@ -1,4 +1,5 @@
 using BlafettisLib;
+using Blazored.Toast.Services;
 using BlazorStrap;
 using BlazorStrap.V5;
 using Microsoft.AspNetCore.Components;
@@ -66,6 +67,9 @@ public partial class Game
 
     [Inject]
     private IBlazorStrap? blazorStrap { get; set; }
+
+    [Inject]
+    private IToastService? toastService { get; set; }
 
     public List<string> privateMessages = new List<string>();
     public List<string> broadcastMessages = new List<string>();
@@ -215,15 +219,16 @@ public partial class Game
             "PlayerShowedYouACard",
             (message) =>
             {
-                blazorStrap.Toaster.Add(
-                    "Your Guess Was Disproven",
-                    message,
-                    o =>
-                    {
-                        o.Color = BSColor.Info;
-                        o.CloseAfter = 10000;
-                    }
-                );
+                // blazorStrap.Toaster.Add(
+                //     "Your Guess Was Disproven",
+                //     message,
+                //     o =>
+                //     {
+                //         o.Color = BSColor.Info;
+                //         o.CloseAfter = 10000;
+                //     }
+                // );
+                toastService.ShowInfo(message);
                 StateHasChanged();
             }
         );
@@ -232,15 +237,16 @@ public partial class Game
             "IncorrectAccusation",
             (message) =>
             {
-                blazorStrap.Toaster.Add(
-                    "Incorrect Accusation!",
-                    message,
-                    o =>
-                    {
-                        o.Color = BSColor.Info;
-                        o.CloseAfter = 10000;
-                    }
-                );
+                // blazorStrap.Toaster.Add(
+                //     "Incorrect Accusation!",
+                //     message,
+                //     o =>
+                //     {
+                //         o.Color = BSColor.Info;
+                //         o.CloseAfter = 10000;
+                //     }
+                // );
+                toastService.ShowInfo(message);
                 StateHasChanged();
             }
         );
@@ -480,13 +486,14 @@ public partial class Game
         return lastActionWasMovementToRoom || playerRemainsInRoom;
     }
 
-    public async Task ShowModal()
+    public async Task Cktest()
     {
         // if (M1 is not null)
         // {
         //     await M1.ShowAsync();
         // }
-        blazorStrap.Toaster.Add("cktest");
+        toastService.ShowInfo("cktst");
+        StateHasChanged();
     }
 
     public string GetPiece(Player player) =>
