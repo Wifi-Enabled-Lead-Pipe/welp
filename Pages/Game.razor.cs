@@ -255,14 +255,15 @@ public partial class Game
             "SuggestionNotDisproved",
             (message) =>
             {
-                blazorStrap.Toaster.Add(
-                    "Your Guess Could Not Be Disproved By Any Player!",
-                    o =>
-                    {
-                        o.Color = BSColor.Info;
-                        o.CloseAfter = 10000;
-                    }
-                );
+                // blazorStrap.Toaster.Add(
+                //     "Your Guess Could Not Be Disproved By Any Player!",
+                //     o =>
+                //     {
+                //         o.Color = BSColor.Info;
+                //         o.CloseAfter = 10000;
+                //     }
+                // );
+                toastService.ShowInfo("Your Guess Could Not Be Disproved By Any Player!");
                 StateHasChanged();
             }
         );
