@@ -26,9 +26,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazorStrap();
 
-// builder.Services.AddBlazoredToast();
+builder.Services.AddBlazoredToast();
 
-builder.Services.AddTransient<IToastService, ToastService>();
+// builder.Services.AddTransient<IToastService, ToastService>();
 
 builder.Services.AddSingleton<ConnectionService>();
 builder.Services.AddTransient<IGameLobbyService, GameLobbyService>();
